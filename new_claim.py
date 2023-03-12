@@ -42,8 +42,14 @@ def create_claim():
         lbl_phone1.configure(text="Введите номер телефона!: +7", fg="red", bg = "black")
     else:
         phone = [a for a in phone1 if a.isnumeric()]
-        ent_phone1.insert(0,phone)
-        lbl_phone1.configure(text="Телефон 1: +7", bg="snow", fg="black")
+        ent_phone1.delete(0,tk.END)
+        phone = ''.join(phone)
+        if len(phone) == 10:
+            ent_phone1.insert(0,phone)
+            lbl_phone1.configure(text="Телефон 1: +7", bg="snow", fg="black")
+        else:
+            lbl_phone1.configure(text="Введите корректный номер телефона!: +7", fg="red", bg="black")
+            ent_phone1.insert(0, phone)
     phone2=ent_phone2.get()
 
 # Создание окна ввода данных по заявке
