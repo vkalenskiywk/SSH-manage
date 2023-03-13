@@ -1,6 +1,9 @@
 import tkinter as tk
+import new_claim
+def create_claim():
+        new_claim.new_claim()
 
-window = tk.Tk()
+main_window = tk.Tk()
 
 button = tk.Button\
     (
@@ -9,7 +12,8 @@ button = tk.Button\
         height=5,
         bg="snow",
         fg="black",
+        command=create_claim,
     )
 
 button.pack()
-window.mainloop()
+main_window.mainloop()
