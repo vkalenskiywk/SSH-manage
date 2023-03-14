@@ -18,6 +18,18 @@ button_claim = tk.Button\
         master=frame_but,
     )
 
+button_claim_manage = tk.Button\
+    (
+        text="Корректировать заявки!",
+        width=25,
+        height=5,
+        bg="snow",
+        fg="black",
+        command=create_claim,
+        master=frame_but,
+    )
+
+
 button_claim = tk.Button\
     (
         text="Создать заявку",
@@ -51,6 +63,7 @@ button_medic = tk.Button\
 
 
 button_claim.pack(fill=tk.BOTH, expand=True)
+button_claim_manage.pack(fill=tk.BOTH, expand=True)
 button_has.pack(fill=tk.BOTH, expand=True)
 button_medic.pack(fill=tk.BOTH, expand=True)
 main_window.mainloop()
