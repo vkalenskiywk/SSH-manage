@@ -55,7 +55,7 @@ def new_claim(cl_list = False):
     # Создание окна ввода данных по заявке
     window = tk.Toplevel()
     window.title("Новая заявка")
-    #cjplftncz hfvrf
+    #создается рамка
     frm_form = tk.Frame(relief=tk.SUNKEN, borderwidth=3, bg = "snow", master=window)
     frm_form.pack()
 
