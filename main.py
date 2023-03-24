@@ -29,17 +29,6 @@ button_claim_manage = tk.Button\
         master=frame_but,
     )
 
-
-button_claim = tk.Button\
-    (
-        text="Создать заявку",
-        width=25,
-        height=5,
-        bg="snow",
-        fg="black",
-        command=create_claim,
-        master=frame_but,
-    )
 button_has = tk.Button\
     (
         text="ОТ и ТБ",
