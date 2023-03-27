@@ -3,35 +3,45 @@ with open("SSH_manage.dbini", 'r') as f:
 for settings in lines:
     comands = settings.strip()
     if comands:
-        print(comands[0])
-    # match comands[0]:
-    #         case ['1']:
-    #                 print('kgkhk')
+        # print(comands[0])
+        # print(str(len(comands))+ " Len")
+        if comands[0] == '1':
+            link_root = comands[3:]
+        elif comands[0] == '3':
+            link_all_cl = comands[3:]
+        elif comands[0] == '5':
+            link_eq = comands[3:]
+        elif comands[0] == '7':
+            fonts_name = comands[3:]
+        elif comands[0] == '9':
+            fonts_size = comands[3:]
+
+
 
 
 
 # print(comands)
 
 import tkinter as tk
-# import claim_create
-# def create_claim():
-#         pass
-#         # claim = claim_create.new_claim()
+import claim_create
+def create_claim():
+        # pass
+        claim = claim_create.new_claim(fonts_name, fonts_size)
 
-# main_window = tk.Tk()
-# frame_but = tk.Frame(master=main_window, width=200, height=100, bg="snow")
-# frame_but.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
+main_window = tk.Tk()
+frame_but = tk.Frame(master=main_window, width=200, height=100, bg="snow")
+frame_but.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
 
-# button_claim = tk.Button\
-#     (
-#         text="Создать заявку!",
-#         width=25,
-#         height=5,
-#         bg="snow",
-#         fg="black",
-#         command=create_claim,
-#         master=frame_but,
-#     )
+button_claim = tk.Button\
+    (
+        text="Создать заявку!",
+        width=25,
+        height=5,
+        bg="snow",
+        fg="black",
+        command=create_claim,
+        master=frame_but,
+    )
 #
 # button_claim_manage = tk.Button\
 #     (
@@ -66,8 +76,8 @@ import tkinter as tk
 #     )
 #
 #
-# button_claim.pack(fill=tk.BOTH, expand=True)
+button_claim.pack(fill=tk.BOTH, expand=True)
 # button_claim_manage.pack(fill=tk.BOTH, expand=True)
 # button_has.pack(fill=tk.BOTH, expand=True)
 # button_medic.pack(fill=tk.BOTH, expand=True)
-# main_window.mainloop()
+main_window.mainloop()
