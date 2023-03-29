@@ -26,8 +26,7 @@ import tkinter as tk
 import claim_create
 def create_claim():
         # pass
-        global claim
-        claim = claim_create.new_claim(fonts_name, fonts_size)
+        claim = claim_create.new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq)
         print(claim)
 
 main_window = tk.Tk()

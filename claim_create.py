@@ -7,12 +7,13 @@ from tkinter.messagebox import showerror, showwarning, showinfo
 import datetime
 import checkdate
 import get_need_val
+import find_claim_number
 
 
 
 
 
-def new_claim(fonts_name, fonts_size):
+def new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq):
     #GUI
 
 
@@ -236,7 +237,6 @@ def new_claim(fonts_name, fonts_size):
     #***********************************************************************************************************************
     #Функции проверки и передачи данных на следующий этап
     def create_claim():
-        global claim
         # global ent_tel_number
         # идентификатор ошибок в ключевых полях
         error = 0
@@ -352,8 +352,8 @@ def new_claim(fonts_name, fonts_size):
         if error:
             showerror(title="Проверьте данные", message="Проверьте корректность вводимых данных")
         else:
-            showinfo(title="Данные", message="Контактные данные внесены")
-            claim = 'tututu'
+            claim_number = find_claim_number.find_claim_number(link_all_cl, c_muser, c_yuser)
+            showinfo(title="Данные", message=claim_number)
 
 
     #***********************************************************************************************************************
