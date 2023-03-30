@@ -7,6 +7,7 @@ for settings in lines:
         # print(str(len(comands))+ " Len")
         if comands[0] == '1':
             link_root = comands[3:]
+
         elif comands[0] == '3':
             link_all_cl = comands[3:]
         elif comands[0] == '5':
