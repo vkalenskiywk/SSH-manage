@@ -19,13 +19,16 @@ def find_claim_number(link_all_cl, c_muser, c_yuser):
         rows = sheet.max_row
         for i in range(2, rows+1):
             if (str(sheet.cell(row = i, column = 4).value) ==  c_muser) & (str(sheet.cell(row = i, column = 5).value) ==  c_yuser):
-                claim_n.append(int(sheet.cell(row = i, column = 4).value))
-        if len(claim_n) > 0:
+                claim_n.append(int(sheet.cell(row = i, column = 3).value))
+        if len(claim_n) > 0: #Присвоение номеру заявки №1, если он свободен
             claim_n.sort()
-            for j in range(1, claim_n):
-                if claim_n[j]-claim_n[j-1] > 1:
-                    claim_number = claim_n[j-1]+1
-                    break
+            if claim_n[0] > 1:
+                claim_number = 1
+            else:
+                for j in range(1, len(claim_n)): # Определение первого свободного номера
+                    if claim_n[j]-claim_n[j-1] > 1:
+                        claim_number = claim_n[j-1]+1
+                        break
             if claim_number == -1:
                 claim_number = claim_n[-1]+1
         else:

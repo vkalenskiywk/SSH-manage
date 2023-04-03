@@ -353,7 +353,37 @@ def new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq):
             showerror(title="Проверьте данные", message="Проверьте корректность вводимых данных")
         else:
             claim_number = find_claim_number.find_claim_number(link_all_cl, c_muser, c_yuser)
-            showinfo(title="Данные", message=claim_number)
+            # showinfo(title="Данные", message=claim_number)
+            claim_letter = family[0].upper()
+            showinfo(title="Данные", message=claim_letter+claim_number+"-"+c_muser+"-"+c_yuser)
+            window2 = tk.Toplevel()
+            window2.title("Проверка номера заявки")
+            frm_claimcorrect = tk.Frame(master=window2)
+            frm_claimcorrect.pack(fill=tk.X, ipadx=5, ipady=5)
+            claim_num_title = tk.Label(master=frm_claimcorrect, text="Заявлению присвоен следующий номер:  ", bg="snow", fg="black",
+                                   font=(font_type, font_size))
+            claim_num_title.grid(row=0, column=0, sticky="e")
+            claim_num_title_let = tk.Label(master=frm_claimcorrect, text=claim_letter, bg="snow",
+                                       fg="black",
+                                       font=(font_type, font_size))
+            claim_num_title_let.grid(row=0, column=1, sticky="e")
+
+            claim_num_title_num = tk.Entry(master=frm_claimcorrect, width=4, font=(font_type, font_size))
+            claim_num_title_num.grid(row=0, column=2, sticky="e")
+            claim_num_title_num.insert(0, claim_number)
+
+            claim_num_title_dat = tk.Label(master=frm_claimcorrect, text="-"+c_muser+"-"+c_yuser, bg="snow",
+                                           fg="black",
+                                           font=(font_type, font_size))
+            claim_num_title_dat.grid(row=0, column=3, sticky="e")
+
+            # ent_address = tk.Entry(master=frm_form, width=50, font=(font_type, font_size))
+            # lbl_address.grid(row=4, column=0, sticky="e")
+            # ent_address.grid(row=4, column=1)
+            # frm_nextbuttons2 = tk.Frame(master=window2)
+            # frm_nextbuttons2.pack(fill=tk.X, ipadx=5, ipady=5)
+            window2.mainloop()
+
 
 
     #***********************************************************************************************************************
