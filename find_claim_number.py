@@ -2,6 +2,9 @@ import os
 import openpyxl
 import tkinter as tk
 
+#######################################################################################################################
+#                                   Function to insert claim number                                                   #
+#######################################################################################################################
 def find_claim_number(link_all_cl, c_muser, c_yuser):
     claim_n = []
     claim_number = -1
@@ -55,7 +58,24 @@ def find_claim_number(link_all_cl, c_muser, c_yuser):
         claim_number = "0"+claim_number
     return claim_number
 
+#######################################################################################################################
+#                                   Function to check claim number                                                    #
+#######################################################################################################################
+def ch_claim(claim_letter, claim_num_title_num, c_muser, c_yuser):
+    main_window2 = tk.Tk()
+    frame_but = tk.Frame(master=main_window2, bg="snow")
+    frame_but.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
+    lbl_region = tk.Label(master=main_window2, text=claim_letter+claim_num_title_num+c_muser+c_yuser, bg="snow", fg="black")  #
+    lbl_region.pack()
+    main_window2.mainloop()
 
+
+
+
+#######################################################################################################################
+#                                   FOR TESTS                                                                         #
+#######################################################################################################################
+# import tkinter as tk
     # main_window2 = tk.Tk()
     # frame_but = tk.Frame(master=main_window2, bg="snow")
     # frame_but.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
