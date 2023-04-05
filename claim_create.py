@@ -94,13 +94,6 @@ def new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq):
             lbl_tel_number[i].configure(text="Телефон: +7", bg = "snow", fg="black")
             ent_tel_name[i].delete(0, tk.END)
 
-    def check_claim():
-        #global claim_letter, c_muser, c_yuser
-        claim_num_title_num =  claim_num_title_num.get()
-        err_ch = find_claim_number.ch_claim(claim_letter, claim_num_title_num, c_muser, c_yuser)
-
-
-
 #######################################################################################################################
 # **********                            Main function for work                                              **********#
 #######################################################################################################################
@@ -222,34 +215,36 @@ def new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq):
             showerror(title="Проверьте данные", message="Проверьте корректность вводимых данных")
         else: #Создание окна для подтверждения номера заявки и корректировки номера (для ручного ввода)
             claim_number = find_claim_number.find_claim_number(link_all_cl, c_muser, c_yuser)
-            claim_letter = family[0].upper()
-            window2 = tk.Toplevel()
-            window2.title("Проверка номера заявки")
-            frm_claimcorrect = tk.Frame(master=window2)
-            frm_claimcorrect.pack(fill=tk.X, ipadx=5, ipady=5)
-            claim_num_title = tk.Label(master=frm_claimcorrect, text="Заявлению присвоен следующий номер:  ", bg="snow", fg="black",
-                                   font=(font_type, font_size))
-            claim_num_title.grid(row=0, column=0, sticky="e")
-            claim_num_title_let = tk.Label(master=frm_claimcorrect, text=claim_letter, bg="snow",
-                                       fg="black",
-                                       font=(font_type, font_size))
-            claim_num_title_let.grid(row=0, column=1, sticky="e")
+            #После получения номера заявки собирается словарь со всеми данными и передается в следующий модуль корректировки номера заявки (при необходимости)
+            #Получение номеров телефонов из полей
+            ph_nmb_cl = []
+            ph_nam_cl = []
 
-            claim_num_title_num = tk.Entry(master=frm_claimcorrect, width=4, font=(font_type, font_size))
-            claim_num_title_num.grid(row=0, column=2, sticky="e")
-            claim_num_title_num.insert(0, claim_number)
-
-            claim_num_title_dat = tk.Label(master=frm_claimcorrect, text="-"+c_muser+"-"+c_yuser, bg="snow",
-                                           fg="black",
-                                           font=(font_type, font_size))
-            claim_num_title_dat.grid(row=0, column=3, sticky="e")
-
-            btn_next2 = tk.Button(master=frm_claimcorrect, text="Далее", bg="snow", fg="black",
-                                 font=(font_type, font_size), command=check_claim)#!!!(claim_letter, claim_num_title_num.get(), c_muser, c_yuser))
-            btn_next2.grid(row=1, column=3, sticky="e")
-
-            window2.mainloop()
-
+            for i in range(len(ent_tel_number)):
+                ph_nmb_cl.append(ent_tel_number[i].get())
+                ph_nam_cl.append(ent_tel_name[i].get())
+            #Получение статуса заявки Завершенная/незавершенная
+            claim_status = claim_state_chk.get()
+            claim_f = {
+                        #Основные данные
+                        'family': family,
+                        'name': name,
+                        'fathername': fathername,
+                        'iin': iin,
+                        'adresse': adresse,
+                        'region': region,
+                        #Дата подачи заявления
+                        'day': c_duser,
+                        'month': c_muser,
+                        'year': c_yuser,
+                        #Статус заявки
+                        'status': claim_status,
+                        #номер телефонов
+                        'tel_n': ph_nmb_cl,
+                        'tel_n_name': ph_nam_cl
+                       }
+            # showinfo(title="Info", message=str(claim_f['status']))
+            window.destroy()
 
 #######################################################################################################################
 #                                       GUI                                                                           #
@@ -297,7 +292,7 @@ def new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq):
     #Чекбокс для указания статуса заявки (завершенная, новая)
     claim_state_chk = BooleanVar()
     claim_state_chk.set(False)  # задайте проверку состояния чекбокса
-    claim_state = Checkbutton(master=frm_date, text='Завершенное', var=claim_state_chk, font=(font_type, font_size))
+    claim_state = Checkbutton(master=frm_date, text='Завершенное', variable=claim_state_chk, font=(font_type, font_size))
     claim_state.grid(column=3, row=0)
 
     #***********************************************************************************************************************
@@ -399,3 +394,34 @@ def new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq):
     #     showinfo(title="Info", message=str(c_yuser)+" в порядке")
     # else:
     #     showinfo(title="Info", message=str(c_yuser)+" не в порядке")
+
+    #Попытка сделать окно проверки номера заявки. Переведена в отдельную функцию!
+    # claim_letter = family[0].upper()
+    #
+    #
+    # window2 = tk.Toplevel()
+    # window2.title("Проверка номера заявки")
+    # frm_claimcorrect = tk.Frame(master=window2)
+    # frm_claimcorrect.pack(fill=tk.X, ipadx=5, ipady=5)
+    # claim_num_title = tk.Label(master=frm_claimcorrect, text="Заявлению присвоен следующий номер:  ", bg="snow", fg="black",
+    #                        font=(font_type, font_size))
+    # claim_num_title.grid(row=0, column=0, sticky="e")
+    # claim_num_title_let = tk.Label(master=frm_claimcorrect, text=claim_letter, bg="snow",
+    #                            fg="black",
+    #                            font=(font_type, font_size))
+    # claim_num_title_let.grid(row=0, column=1, sticky="e")
+    #
+    # claim_num_title_num = tk.Entry(master=frm_claimcorrect, width=4, font=(font_type, font_size))
+    # claim_num_title_num.grid(row=0, column=2, sticky="e")
+    # claim_num_title_num.insert(0, claim_number)
+    #
+    # claim_num_title_dat = tk.Label(master=frm_claimcorrect, text="-"+c_muser+"-"+c_yuser, bg="snow",
+    #                                fg="black",
+    #                                font=(font_type, font_size))
+    # claim_num_title_dat.grid(row=0, column=3, sticky="e")
+    #
+    # btn_next2 = tk.Button(master=frm_claimcorrect, text="Далее", bg="snow", fg="black",
+    #                      font=(font_type, font_size), command=check_claim)#!!!(claim_letter, claim_num_title_num.get(), c_muser, c_yuser))
+    # btn_next2.grid(row=1, column=3, sticky="e")
+    #
+    # window2.mainloop()
