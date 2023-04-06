@@ -227,6 +227,7 @@ def new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq):
             claim_status = claim_state_chk.get()
             claim_f = {
                         #Основные данные
+                        'number': claim_number,
                         'family': family,
                         'name': name,
                         'fathername': fathername,
@@ -243,8 +244,9 @@ def new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq):
                         'tel_n': ph_nmb_cl,
                         'tel_n_name': ph_nam_cl
                        }
-            # showinfo(title="Info", message=str(claim_f['status']))
             window.destroy()
+            claim_f = find_claim_number.ch_claim(claim_f, link_all_cl, fonts_name, fonts_size)
+            showinfo(title="Info", message=str(claim_f['number']))
 
 #######################################################################################################################
 #                                       GUI                                                                           #

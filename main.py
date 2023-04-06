@@ -27,8 +27,8 @@ import tkinter as tk
 import claim_create
 def create_claim():
         # pass
-        claim = claim_create.new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq)
-        print(claim)
+        claim_create.new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq)
+        # print(claim)
 
 main_window = tk.Tk()
 frame_but = tk.Frame(master=main_window, width=200, height=100, bg="snow")
