@@ -4,6 +4,7 @@ import create_path
 import tkinter as tk
 import get_need_val
 from tkinter.messagebox import showerror, showwarning, showinfo
+import claim_create_descr
 
 
 
@@ -68,74 +69,18 @@ def find_claim_number(link_all_cl, c_muser, c_yuser):
 #######################################################################################################################
 #                                   Function to check claim number                                                    #
 #######################################################################################################################
-def ch_claim(claim_f, link_all_cl, font_type, font_size):
-
-    def check_claim():
-        claim_n = []
-        wb = openpyxl.load_workbook(fullpath)
-        sheet = wb['claims_list']
-        rows = sheet.max_row
-        new_c_n = get_need_val.get_value(claim_num_title_num.get())
-        claim_num_title_num.delete(0, tk.END)
-        claim_num_title_num.insert(0, new_c_n)
-        for i in range(2, rows+1):
-            if (str(sheet.cell(row = i, column = 4).value) ==  c_muser) & (str(sheet.cell(row = i, column = 5).value) ==  c_yuser):
-                claim_n.append(int(sheet.cell(row = i, column = 3).value))
-        if int(new_c_n) in claim_n:
-            showerror(title="Проверьте данные", message="Заявка с таким номером уже есть")
-        else:
-            new_c_n = str(new_c_n)
-            while len(new_c_n) < 4:
-                new_c_n = "0" + new_c_n
-            claim_num_title_num.delete(0, tk.END)
-            claim_num_title_num.insert(0, new_c_n)
-            claim_f['number'] = new_c_n
-            window2.destroy()
-
-
-
-
-
-
-    fullpath = create_path.createpath(link_all_cl, "claims_list.xlsx")
-
-    claim_letter = claim_f['family'][0].upper()
-    claim_number = claim_f['number']
-    c_muser = claim_f['month']
-    c_yuser = claim_f['year']
-
-    window2 = tk.Tk()
-    window2.title("Проверка номера заявки")
-    frm_claimcorrect = tk.Frame(master=window2)
-    frm_claimcorrect.pack(fill=tk.X, ipadx=5, ipady=5)
-    claim_num_title = tk.Label(master=frm_claimcorrect, text="Заявлению присвоен следующий номер:  ", bg="snow", fg="black",
-                           font=(font_type, font_size))
-    claim_num_title.grid(row=0, column=0, sticky="e")
-    claim_num_title_let = tk.Label(master=frm_claimcorrect, text=claim_letter, bg="snow",
-                               fg="black",
-                               font=(font_type, font_size))
-    claim_num_title_let.grid(row=0, column=1, sticky="e")
-
-    claim_num_title_num = tk.Entry(master=frm_claimcorrect, width=4, font=(font_type, font_size))
-    claim_num_title_num.grid(row=0, column=2, sticky="e")
-    claim_num_title_num.insert(0, claim_number)
-
-    claim_num_title_dat = tk.Label(master=frm_claimcorrect, text="-"+c_muser+"-"+c_yuser, bg="snow",
-                                   fg="black",
-                                   font=(font_type, font_size))
-    claim_num_title_dat.grid(row=0, column=3, sticky="e")
-
-    btn_next2 = tk.Button(master=frm_claimcorrect, text="Далее", bg="snow", fg="black",
-                         font=(font_type, font_size), command=check_claim)
-    btn_next2.grid(row=1, column=3, sticky="e")
-
-    window2.mainloop()
-    return claim_f
-
-
-
-
-
+def ch_claim(new_c_n, fullpath, c_muser, c_yuser):
+    claim_n = []
+    wb = openpyxl.load_workbook(fullpath)
+    sheet = wb['claims_list']
+    rows = sheet.max_row
+    for i in range(2, rows + 1):
+        if (str(sheet.cell(row=i, column=4).value) == c_muser) & (str(sheet.cell(row=i, column=5).value) == c_yuser):
+            claim_n.append(int(sheet.cell(row=i, column=3).value))
+    if int(new_c_n) in claim_n:
+        return False
+    else:
+        return True
 
 #######################################################################################################################
 #                                   FOR TESTS                                                                         #

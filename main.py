@@ -27,7 +27,12 @@ import tkinter as tk
 import claim_create
 def create_claim():
         # pass
+        button_claim.configure(state="disabled")
         claim_create.new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq)
+        # button_claim.configure(state='active')
+        # compl = claim_create.new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq)
+        # if compl:
+        #     button_claim.configure(state='active')
         # print(claim)
 
 main_window = tk.Tk()
@@ -82,4 +87,5 @@ button_claim.pack(fill=tk.BOTH, expand=True)
 # button_claim_manage.pack(fill=tk.BOTH, expand=True)
 # button_has.pack(fill=tk.BOTH, expand=True)
 # button_medic.pack(fill=tk.BOTH, expand=True)
+# main_window.grab_set()
 main_window.mainloop()

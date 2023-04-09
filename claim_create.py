@@ -8,7 +8,7 @@ import datetime
 import checkdate
 import get_need_val
 import find_claim_number
-
+import claim_create_descr
 
 
 
@@ -212,7 +212,7 @@ def new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq):
 
         # Проверка на получение всех данных
         if error:
-            showerror(title="Проверьте данные", message="Проверьте корректность вводимых данных")
+            showerror(title="Проверьте данные", message="Проверьте корректность вводимых данных", master=window)
         else: #Создание окна для подтверждения номера заявки и корректировки номера (для ручного ввода)
             claim_number = find_claim_number.find_claim_number(link_all_cl, c_muser, c_yuser)
             #После получения номера заявки собирается словарь со всеми данными и передается в следующий модуль корректировки номера заявки (при необходимости)
@@ -244,9 +244,10 @@ def new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq):
                         'tel_n': ph_nmb_cl,
                         'tel_n_name': ph_nam_cl
                        }
+            window.grab_release()
             window.destroy()
-            claim_f = find_claim_number.ch_claim(claim_f, link_all_cl, fonts_name, fonts_size)
-            showinfo(title="Info", message=str(claim_f['number']))
+            claim_create_descr.create(claim_f, link_all_cl, link_eq, link_root, fonts_name, fonts_size)
+
 
 #######################################################################################################################
 #                                       GUI                                                                           #
@@ -264,7 +265,8 @@ def new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq):
 
     #***********************************************************************************************************************
     #Создание главной формы для заполнения данных по заявке
-    window = tk.Toplevel()
+    #window = tk.Toplevel()
+    window = tk.Tk()
     window.title("Новая заявка")
 
     #***********************************************************************************************************************
@@ -368,7 +370,7 @@ def new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq):
 
     #***********************************************************************************************************************
     #Кнопки добавления и удаления телефона
-    frm_buttons = tk.Frame(master=window)
+    frm_buttons = tk.Frame(master=window, bg="snow")
     frm_buttons.pack(fill=tk.X, ipadx=5, ipady=5)
 
     btn_add = tk.Button(master=frm_buttons, text="+ Добавить контактный номер", bg = "snow", fg="black", command=add_tel, font=(font_type, font_size))
@@ -379,7 +381,7 @@ def new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq):
 
     #***********************************************************************************************************************
     # кнопки передачи данных далее
-    frm_nextbuttons = tk.Frame(master=window)
+    frm_nextbuttons = tk.Frame(master=window, bg="snow")
     frm_nextbuttons.pack(fill=tk.X, ipadx=5, ipady=5)
 
     btn_next = tk.Button(master=frm_nextbuttons, text="Далее", bg = "snow", fg="black", command=create_claim, font=(font_type, font_size))
@@ -389,7 +391,9 @@ def new_claim(fonts_name, fonts_size, link_all_cl, link_root, link_eq):
     btn_clear = tk.Button(master=frm_nextbuttons, text="Очистить", bg = "snow", fg="black", command=clear_claim, font=(font_type, font_size))
     btn_clear.pack(side=tk.RIGHT, ipadx=10)
     #***********************************************************************************************************************
+    window.grab_set()
     window.mainloop()
+    # return True
 
     #Разное, что может понадобится для тестирования
     # if yerr == 0:
