@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from tkinter.messagebox import showerror, showwarning, showinfo
-# from tkinter import ttk
+from tkinter import ttk
 # from tkinter.ttk import Checkbutton
 # Userfunction
 import datetime
@@ -139,6 +139,44 @@ def create(claim_f, link_all_cl, link_eq, link_root, fonts_name, fonts_size):
     food_checkbutton.pack(anchor=NW)
     heating_checkbutton.pack(anchor=NW)
     hot_water_checkbutton.pack(anchor=NW)
+
+##################################### Ввод оборудования ###############################################################
+
+    frm_claim_equip = tk.Frame(master=cl_dscr, bg="snow")
+    frm_claim_equip.pack(fill=tk.X, pady=5)
+    equipments = ['', 'иное', 'navien', 'viessman sdfhgdhgbnhjhtgrfbnhdjyhstgbfnhdjhtdgfbnhgjdhfxdgb', 'ПГ-2', 'ПГ-3', 'ПГ-4']
+    equip_com = ['']
+    equip_sum = ['']
+    equip_n_model_ent = ['']
+    equip_n_type_ent = ['']
+    equip_n_cons_ent = ['']
+    equip_n_sum_ent = ['']
+    equip_n_model_lbl = ['']
+    equip_n_type_lbl = ['']
+    equip_n_cons_lbl = ['']
+    equip_n_sum_lbl = ['']
+
+    equip_com[0] = ttk.Combobox(values=equipments, master=frm_claim_equip, font=(fonts_name, str(int(fonts_size)-2)),
+                                state="readonly")
+    equip_com[0].grid(column=0, row=0, columnspan=3)
+    equip_sum[0] = tk.Entry(master=frm_claim_equip, width=3, font=(fonts_name, str(int(fonts_size)-2)))
+    equip_sum[0].grid(column=3, row=0, pady=5)
+
+    equip_n_model_lbl[0] = tk.Label(master=frm_claim_equip, text = 'Модель оборудования',
+                                  bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
+    equip_n_type_lbl[0] = tk.Label(master=frm_claim_equip, text = 'Тип оборудования',
+                                  bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
+    equip_n_cons_lbl[0] = tk.Label(master=frm_claim_equip, text = 'Расход, м^3/ч',
+                                  bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
+    equip_n_sum_lbl[0] = tk.Label(master=frm_claim_equip, text = 'Количество',
+                                  bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
+    equip_n_model_lbl[0].grid(column=0, row=1, padx=5)
+    equip_n_type_lbl[0].grid(column=1, row=1, padx=5)
+    equip_n_cons_lbl[0].grid(column=2, row=1, padx=5)
+    equip_n_sum_lbl[0].grid(column=3, row=1, padx=5)
+
+
+
 
 
     # Запуск поля
