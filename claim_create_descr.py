@@ -25,7 +25,7 @@ def create(claim_f, link_all_cl, link_eq, link_root, fonts_name, fonts_size):
         if not(ch_cl):
             showerror(title="Проверьте данные", message="Заявка с таким номером уже есть", master=cl_dscr)
         else:
-            showerror(title="Проверьте данные", message="Заявкb с таким номером еще нет", master=cl_dscr)
+            showerror(title="Проверьте данные", message="Заявки с таким номером еще нет", master=cl_dscr)
             new_c_n = str(new_c_n)
             while len(new_c_n) < 4:
                 new_c_n = "0" + new_c_n
@@ -39,6 +39,64 @@ def create(claim_f, link_all_cl, link_eq, link_root, fonts_name, fonts_size):
         if hot_water.get() == 1: result = f"{result}горячее водоснабжение; "
         claim_goal_entr.delete(0, tk.END)
         claim_goal_entr.insert(0, result)
+
+
+    #Функция добавления оборудования
+    def add_equip():
+        equip_com.append(ttk.Combobox(values=equipments, master=frm_claim_equip, font=(fonts_name, str(int(fonts_size) - 2)),
+                                    state="readonly", width=leng))
+        equip_com[-1].grid(column=0, row=(1+(len(equip_com)-1)*3), columnspan=3)
+        equip_sum.append(tk.Entry(master=frm_claim_equip, width=3, font=(fonts_name, str(int(fonts_size) - 2))))
+        equip_sum[-1].grid(column=3, row=(1+(len(equip_sum)-1)*3), pady=5)
+
+        equip_n_model_lbl.append(tk.Label(master=frm_claim_equip, text='Модель оборудования',
+                                        bg="snow", font=(fonts_name, str(int(fonts_size) - 2))))
+        equip_n_type_lbl.append(tk.Label(master=frm_claim_equip, text='Тип оборудования',
+                                       bg="snow", font=(fonts_name, str(int(fonts_size) - 2))))
+        equip_n_cons_lbl.append(tk.Label(master=frm_claim_equip, text='Расход, м^3/ч',
+                                       bg="snow", font=(fonts_name, str(int(fonts_size) - 2))))
+        equip_n_sum_lbl.append(tk.Label(master=frm_claim_equip, text='Количество',
+                                      bg="snow", font=(fonts_name, str(int(fonts_size) - 2))))
+        equip_n_model_lbl[-1].grid(column=0, row=(2+(len(equip_n_model_lbl)-1)*3), padx=5)
+        equip_n_type_lbl[-1].grid(column=1, row=(2+(len(equip_n_type_lbl)-1)*3), padx=5)
+        equip_n_cons_lbl[-1].grid(column=2, row=(2+(len(equip_n_cons_lbl)-1)*3), padx=5)
+        equip_n_sum_lbl[-1].grid(column=3, row=(2+(len(equip_n_sum_lbl)-1)*3), padx=5)
+        equip_n_model_ent.append(tk.Entry(master=frm_claim_equip, font=(fonts_name, fonts_size), state="disabled"))
+        equip_n_type_ent.append(tk.Entry(master=frm_claim_equip, font=(fonts_name, fonts_size), state="disabled"))
+        equip_n_cons_ent.append(tk.Entry(master=frm_claim_equip, font=(fonts_name, fonts_size), state="disabled"))
+        equip_n_sum_ent.append(tk.Entry(master=frm_claim_equip, font=(fonts_name, fonts_size), state="disabled"))
+        equip_n_model_ent[-1].grid(column=0, row=(3+(len(equip_n_model_ent)-1)*3), padx=5)
+        equip_n_type_ent[-1].grid(column=1, row=(3+(len(equip_n_type_ent)-1)*3), padx=5)
+        equip_n_cons_ent[-1].grid(column=2, row=(3+(len(equip_n_cons_ent)-1)*3), padx=5)
+        equip_n_sum_ent[-1].grid(column=3, row=(3+(len(equip_n_sum_ent)-1)*3), padx=5)
+
+
+    def remove_equip():
+        if len(equip_com) > 1:
+            equip_com[-1].destroy()
+            equip_com.pop(-1)
+
+            equip_sum[-1].destroy()
+            equip_n_model_ent[-1].destroy()
+            equip_n_type_ent[-1].destroy()
+            equip_n_cons_ent[-1].destroy()
+            equip_n_sum_ent[-1].destroy()
+            equip_n_model_lbl[-1].destroy()
+            equip_n_type_lbl[-1].destroy()
+            equip_n_cons_lbl[-1].destroy()
+            equip_n_sum_lbl[-1].destroy()
+
+            equip_sum.pop(-1)
+            equip_n_model_ent.pop(-1)
+            equip_n_type_ent.pop(-1)
+            equip_n_cons_ent.pop(-1)
+            equip_n_sum_ent.pop(-1)
+            equip_n_model_lbl.pop(-1)
+            equip_n_type_lbl.pop(-1)
+            equip_n_cons_lbl.pop(-1)
+            equip_n_sum_lbl.pop(-1)
+        else:
+            pass
 
 
 #######################################################################################################################
@@ -144,7 +202,16 @@ def create(claim_f, link_all_cl, link_eq, link_root, fonts_name, fonts_size):
 
     frm_claim_equip = tk.Frame(master=cl_dscr, bg="snow")
     frm_claim_equip.pack(fill=tk.X, pady=5)
-    equipments = ['', 'иное', 'navien', 'viessman sdfhgdhgbnhjhtgrfbnhdjyhstgbfnhdjhtdgfbnhgjdhfxdgb', 'ПГ-2', 'ПГ-3', 'ПГ-4']
+
+    # sb_ver = Scrollbar(master=cl_dscr, orient=VERTICAL)
+    # sb_ver.pack(side=RIGHT, fill=Y)
+
+
+    equipments = ['', 'иное', 'navien', 'viessman sdfhgdhgbnhjhtgvcdvfbdgsfdvbgsafdvfbsgrafsd', 'ПГ-2', 'ПГ-3', 'ПГ-4']
+    leng = 1
+    for i in equipments:
+        if len(i) > leng:
+            leng = len(i)
     equip_com = ['']
     equip_sum = ['']
     equip_n_model_ent = ['']
@@ -156,11 +223,18 @@ def create(claim_f, link_all_cl, link_eq, link_root, fonts_name, fonts_size):
     equip_n_cons_lbl = ['']
     equip_n_sum_lbl = ['']
 
+    add_equip_butt = tk.Button(master=frm_claim_equip, font=(fonts_name, str(int(fonts_size)-2)),
+                               text="Добавить оборудование", command=add_equip)
+    rem_equip_butt = tk.Button(master=frm_claim_equip, font=(fonts_name, str(int(fonts_size)-2)),
+                               text="Убрать оборудование", command=remove_equip)
+    add_equip_butt.grid(column=0, row=0, columnspan=2)
+    rem_equip_butt.grid(column=2, row=0, columnspan=2)
+
     equip_com[0] = ttk.Combobox(values=equipments, master=frm_claim_equip, font=(fonts_name, str(int(fonts_size)-2)),
-                                state="readonly")
-    equip_com[0].grid(column=0, row=0, columnspan=3)
+                                state="readonly", width=leng)
+    equip_com[0].grid(column=0, row=1, columnspan=3)
     equip_sum[0] = tk.Entry(master=frm_claim_equip, width=3, font=(fonts_name, str(int(fonts_size)-2)))
-    equip_sum[0].grid(column=3, row=0, pady=5)
+    equip_sum[0].grid(column=3, row=1, pady=5)
 
     equip_n_model_lbl[0] = tk.Label(master=frm_claim_equip, text = 'Модель оборудования',
                                   bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
@@ -170,12 +244,18 @@ def create(claim_f, link_all_cl, link_eq, link_root, fonts_name, fonts_size):
                                   bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
     equip_n_sum_lbl[0] = tk.Label(master=frm_claim_equip, text = 'Количество',
                                   bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
-    equip_n_model_lbl[0].grid(column=0, row=1, padx=5)
-    equip_n_type_lbl[0].grid(column=1, row=1, padx=5)
-    equip_n_cons_lbl[0].grid(column=2, row=1, padx=5)
-    equip_n_sum_lbl[0].grid(column=3, row=1, padx=5)
-
-
+    equip_n_model_lbl[0].grid(column=0, row=2, padx=5)
+    equip_n_type_lbl[0].grid(column=1, row=2, padx=5)
+    equip_n_cons_lbl[0].grid(column=2, row=2, padx=5)
+    equip_n_sum_lbl[0].grid(column=3, row=2, padx=5)
+    equip_n_model_ent[0] = tk.Entry(master=frm_claim_equip, font=(fonts_name, fonts_size), state="disabled")
+    equip_n_type_ent[0] = tk.Entry(master=frm_claim_equip, font=(fonts_name, fonts_size), state="disabled")
+    equip_n_cons_ent[0] = tk.Entry(master=frm_claim_equip, font=(fonts_name, fonts_size), state="disabled")
+    equip_n_sum_ent[0] = tk.Entry(master=frm_claim_equip, font=(fonts_name, fonts_size), state="disabled")
+    equip_n_model_ent[0].grid(column=0, row=3, padx=5)
+    equip_n_type_ent[0].grid(column=1, row=3, padx=5)
+    equip_n_cons_ent[0].grid(column=2, row=3, padx=5)
+    equip_n_sum_ent[0].grid(column=3, row=3, padx=5)
 
 
 
