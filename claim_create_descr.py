@@ -200,11 +200,20 @@ def create(claim_f, link_all_cl, link_eq, link_root, fonts_name, fonts_size):
 
 ##################################### Ввод оборудования ###############################################################
 
+
+
     frm_claim_equip = tk.Frame(master=cl_dscr, bg="snow")
     frm_claim_equip.pack(fill=tk.X, pady=5)
 
-    # sb_ver = Scrollbar(master=cl_dscr, orient=VERTICAL)
-    # sb_ver.pack(side=RIGHT, fill=Y)
+    canvas_widget = Canvas(master=cl_dscr, width=500, height=150)
+    canvas_widget.pack()
+
+
+    # sb_ver = Scrollbar(master=frm_claim_equip, orient=VERTICAL)
+    # sb_ver.grid(row=0, column=4, sticky=NS, rowspan=4)
+    #
+    # frm_claim_equip.config(yscrollcommand=sb_ver.set)
+    # sb_ver.config(command=frm_claim_equip.yview)
 
 
     equipments = ['', 'иное', 'navien', 'viessman sdfhgdhgbnhjhtgvcdvfbdgsfdvbgsafdvfbsgrafsd', 'ПГ-2', 'ПГ-3', 'ПГ-4']
@@ -230,11 +239,13 @@ def create(claim_f, link_all_cl, link_eq, link_root, fonts_name, fonts_size):
     add_equip_butt.grid(column=0, row=0, columnspan=2)
     rem_equip_butt.grid(column=2, row=0, columnspan=2)
 
-    equip_com[0] = ttk.Combobox(values=equipments, master=frm_claim_equip, font=(fonts_name, str(int(fonts_size)-2)),
+    equip_com[0] = ttk.Combobox(values=equipments, master=cl_dscr, font=(fonts_name, str(int(fonts_size)-2)),
                                 state="readonly", width=leng)
-    equip_com[0].grid(column=0, row=1, columnspan=3)
-    equip_sum[0] = tk.Entry(master=frm_claim_equip, width=3, font=(fonts_name, str(int(fonts_size)-2)))
-    equip_sum[0].grid(column=3, row=1, pady=5)
+    canvas_widget.create_window(10, 50, window=equip_com[0])
+    # equip_com[0].grid(column=0, row=1, columnspan=3)
+    equip_sum[0] = tk.Entry(master=cl_dscr, width=3, font=(fonts_name, str(int(fonts_size)-2)))
+    canvas_widget.create_window(30, 50, window=equip_sum[0])
+    # equip_sum[0].grid(column=3, row=1, pady=5)
 
     equip_n_model_lbl[0] = tk.Label(master=frm_claim_equip, text = 'Модель оборудования',
                                   bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
