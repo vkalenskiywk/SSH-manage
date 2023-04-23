@@ -200,27 +200,26 @@ def create(claim_f, link_all_cl, link_eq, link_root, fonts_name, fonts_size):
 
 ##################################### Ввод оборудования ###############################################################
 
-
-
     frm_claim_equip = tk.Frame(master=cl_dscr, bg="snow")
     frm_claim_equip.pack(fill=tk.X, pady=5)
 
-    canvas_widget = Canvas(master=cl_dscr, width=500, height=150)
-    canvas_widget.pack()
 
 
-    # sb_ver = Scrollbar(master=frm_claim_equip, orient=VERTICAL)
-    # sb_ver.grid(row=0, column=4, sticky=NS, rowspan=4)
-    #
-    # frm_claim_equip.config(yscrollcommand=sb_ver.set)
-    # sb_ver.config(command=frm_claim_equip.yview)
+    #Для примера. Потом оборудование будет браться из БД
+    # equipments = ['', 'иное', 'navien', 'viessman sdfhgdhgbnhjhtgvcdvfbdgsfdvbgsafdvfbsgrafsd', 'ПГ-2', 'ПГ-3', 'ПГ-4']
+    equipments = ['', 'иное', 'navien', 'viessman', 'ПГ-2', 'ПГ-3', 'ПГ-4']
 
-
-    equipments = ['', 'иное', 'navien', 'viessman sdfhgdhgbnhjhtgvcdvfbdgsfdvbgsafdvfbsgrafsd', 'ПГ-2', 'ПГ-3', 'ПГ-4']
+    #Определение ширины виджета выбора оборудования
     leng = 1
     for i in equipments:
         if len(i) > leng:
             leng = len(i)
+    if leng < 10:
+        leng = 10
+    elif leng > 30:
+        leng = 30
+
+    #Создание массивов для виджетов ввода оборудования
     equip_com = ['']
     equip_sum = ['']
     equip_n_model_ent = ['']
@@ -232,6 +231,7 @@ def create(claim_f, link_all_cl, link_eq, link_root, fonts_name, fonts_size):
     equip_n_cons_lbl = ['']
     equip_n_sum_lbl = ['']
 
+    # Кнопка создания дополнительного поля по оборудованию
     add_equip_butt = tk.Button(master=frm_claim_equip, font=(fonts_name, str(int(fonts_size)-2)),
                                text="Добавить оборудование", command=add_equip)
     rem_equip_butt = tk.Button(master=frm_claim_equip, font=(fonts_name, str(int(fonts_size)-2)),
@@ -239,43 +239,60 @@ def create(claim_f, link_all_cl, link_eq, link_root, fonts_name, fonts_size):
     add_equip_butt.grid(column=0, row=0, columnspan=2)
     rem_equip_butt.grid(column=2, row=0, columnspan=2)
 
-    equip_com[0] = ttk.Combobox(values=equipments, master=cl_dscr, font=(fonts_name, str(int(fonts_size)-2)),
-                                state="readonly", width=leng)
-    canvas_widget.create_window(10, 50, window=equip_com[0])
-    # equip_com[0].grid(column=0, row=1, columnspan=3)
-    equip_sum[0] = tk.Entry(master=cl_dscr, width=3, font=(fonts_name, str(int(fonts_size)-2)))
-    canvas_widget.create_window(30, 50, window=equip_sum[0])
-    # equip_sum[0].grid(column=3, row=1, pady=5)
+    #Область ввода оборудования
 
-    equip_n_model_lbl[0] = tk.Label(master=frm_claim_equip, text = 'Модель оборудования',
-                                  bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
-    equip_n_type_lbl[0] = tk.Label(master=frm_claim_equip, text = 'Тип оборудования',
-                                  bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
-    equip_n_cons_lbl[0] = tk.Label(master=frm_claim_equip, text = 'Расход, м^3/ч',
-                                  bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
-    equip_n_sum_lbl[0] = tk.Label(master=frm_claim_equip, text = 'Количество',
-                                  bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
-    equip_n_model_lbl[0].grid(column=0, row=2, padx=5)
-    equip_n_type_lbl[0].grid(column=1, row=2, padx=5)
-    equip_n_cons_lbl[0].grid(column=2, row=2, padx=5)
-    equip_n_sum_lbl[0].grid(column=3, row=2, padx=5)
-    equip_n_model_ent[0] = tk.Entry(master=frm_claim_equip, font=(fonts_name, fonts_size), state="disabled")
-    equip_n_type_ent[0] = tk.Entry(master=frm_claim_equip, font=(fonts_name, fonts_size), state="disabled")
-    equip_n_cons_ent[0] = tk.Entry(master=frm_claim_equip, font=(fonts_name, fonts_size), state="disabled")
-    equip_n_sum_ent[0] = tk.Entry(master=frm_claim_equip, font=(fonts_name, fonts_size), state="disabled")
-    equip_n_model_ent[0].grid(column=0, row=3, padx=5)
-    equip_n_type_ent[0].grid(column=1, row=3, padx=5)
-    equip_n_cons_ent[0].grid(column=2, row=3, padx=5)
-    equip_n_sum_ent[0].grid(column=3, row=3, padx=5)
+    canvas_widget = Canvas(master=cl_dscr, width=1000, height=500, bg="green")
+    canvas_widget.pack(side=LEFT)
+
+    equip_sum[0] = tk.Entry(master=cl_dscr, width=3, font=(fonts_name, str(int(fonts_size)-2)))
+    szf = 2
+    # for i in range(5):
+    #     # equip_sum[0] = tk.Entry(master=cl_dscr, width=3, font=(fonts_name, str(int(fonts_size)-2)))
+    #     l = (i+1)*3
+    #     q = ""
+    #     for j in range(l):
+    #         q=q+"0"
+    #     visa, lengha = get_need_val.GetTextDimensions(q, int(fonts_size)-2, fonts_name)
+    #     equip_sum.append(tk.Entry(master=cl_dscr, width=l, font=(fonts_name, str(int(fonts_size)-2))))
+    #     equip_sum[i+1].insert(0,q)
+    #     x = lengha/2
+    #     # y = visa/2
+    #     equip_sum[i + 1].insert(0, str(lengha)+"^"+str(visa))
+    #     canvas_widget.create_window(x, (i+1)*visa, window=equip_sum[i+1], anchor=NW)
+
+
+    # equip_n_model_lbl[0] = tk.Label(master=frm_claim_equip, text = 'Модель оборудования',
+    #                               bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
+    # equip_n_type_lbl[0] = tk.Label(master=frm_claim_equip, text = 'Тип оборудования',
+    #                               bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
+    # equip_n_cons_lbl[0] = tk.Label(master=frm_claim_equip, text = 'Расход, м^3/ч',
+    #                               bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
+    # equip_n_sum_lbl[0] = tk.Label(master=frm_claim_equip, text = 'Количество',
+    #                               bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
+    # equip_n_model_lbl[0].grid(column=0, row=2, padx=5)
+    # equip_n_type_lbl[0].grid(column=1, row=2, padx=5)
+    # equip_n_cons_lbl[0].grid(column=2, row=2, padx=5)
+    # equip_n_sum_lbl[0].grid(column=3, row=2, padx=5)
+    # equip_n_model_ent[0] = tk.Entry(master=frm_claim_equip, font=(fonts_name, fonts_size), state="disabled")
+    # equip_n_type_ent[0] = tk.Entry(master=frm_claim_equip, font=(fonts_name, fonts_size), state="disabled")
+    # equip_n_cons_ent[0] = tk.Entry(master=frm_claim_equip, font=(fonts_name, fonts_size), state="disabled")
+    # equip_n_sum_ent[0] = tk.Entry(master=frm_claim_equip, font=(fonts_name, fonts_size), state="disabled")
+    # equip_n_model_ent[0].grid(column=0, row=3, padx=5)
+    # equip_n_type_ent[0].grid(column=1, row=3, padx=5)
+    # equip_n_cons_ent[0].grid(column=2, row=3, padx=5)
+    # equip_n_sum_ent[0].grid(column=3, row=3, padx=5)
 
 
 
     # Запуск поля
     cl_dscr.mainloop()
 
+# myframe = Frame(canvas_widget)
+# myframe.pack(side=LEFT)
 
-
-
+# equip_com[0] = ttk.Combobox(values=equipments, master=cl_dscr, font=(fonts_name, str(int(fonts_size)-2)),
+#                             state="readonly", width=leng)
+# canvas_widget.create_window(10, 10, window=equip_com[0])
 
 
 
@@ -299,3 +316,9 @@ def create(claim_f, link_all_cl, link_eq, link_root, fonts_name, fonts_size):
     #     'tel_n': ph_nmb_cl,
     #     'tel_n_name': ph_nam_cl
     #        }
+
+    # sb_ver = Scrollbar(master=frm_claim_equip, orient=VERTICAL)
+    # sb_ver.grid(row=0, column=4, sticky=NS, rowspan=4)
+    #
+    # frm_claim_equip.config(yscrollcommand=sb_ver.set)
+    # sb_ver.config(command=frm_claim_equip.yview)
