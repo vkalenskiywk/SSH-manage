@@ -12,7 +12,7 @@ import create_path
 
 fonts_name = "Arial"
 link_all_cl = 'd:/SSH/Managers/SSH/Database/'
-fonts_size = '20'
+fonts_size = '14'
 
 claim_f = {
         # Основные данные
@@ -63,78 +63,107 @@ def select():
     claim_goal_entr.insert(0, result)
 
 
-def add_equip():
-    # for i in range(2):
-    #     # equip_sum[0] = tk.Entry(master=cl_dscr, width=3, font=(fonts_name, str(int(fonts_size)-2)))
-    #     l = (i + 1) * 3
-    #     q = ""
-    #     for j in range(l):
-    #         q = q + "0"
-    #     visa, lengha = get_need_val.GetTextDimensions(q, int(fonts_size) - 2, fonts_name)
-    #     equip_sum.append(tk.Entry(master=canvas_widget, width=l, font=(fonts_name, str(int(fonts_size) - 2))))
-    #     equip_sum[-1].insert(0, q)
-    #     x = lengha / 2
-    #     y = visa / 2
-    #     equip_sum[-1].insert(0, str(lengha) + "^" + str(visa))
-    #     # equip_sum[i + 1].grid(row = i, column = 0, sticky=W)
-    #     canvas_widget.create_window(x, (i + 1) * visa * 10, window=equip_sum[-1], anchor=NW)
+def add_equip():  # +lk_f*len()
 
+    ############ Внесение новых полей ##################
 
-
-    equip_com.append(ttk.Combobox(values=equipments, master=eq_insert_fr, font=(fonts_name, str(int(fonts_size) - 2)),
-                                state="readonly", width=leng))
-    equip_com[-1].grid(column=0, row=(1+(len(equip_com)-1)*3), columnspan=3)
-    equip_sum.append(tk.Entry(master=eq_insert_fr, width=3, font=(fonts_name, str(int(fonts_size) - 2))))
-    equip_sum[-1].grid(column=3, row=(1+(len(equip_sum)-1)*3), pady=5)
-
-    equip_n_model_lbl.append(tk.Label(master=eq_insert_fr, text='Модель оборудования',
+    equip_n_model_lbl.append(tk.Label(master=canvas_widget, text='Марка/модель оборудования №' + str(len(equip_n_model_lbl)+1),
                                     bg="snow", font=(fonts_name, str(int(fonts_size) - 2))))
-    equip_n_type_lbl.append(tk.Label(master=eq_insert_fr, text='Тип оборудования',
+    equip_n_comm_lbl.append(tk.Label(master=canvas_widget, text='Комментарий:',
                                    bg="snow", font=(fonts_name, str(int(fonts_size) - 2))))
-    equip_n_cons_lbl.append(tk.Label(master=eq_insert_fr, text='Расход, м^3/ч',
+    equip_n_cons_lbl.append(tk.Label(master=canvas_widget, text='Расход, м^3/ч',
                                    bg="snow", font=(fonts_name, str(int(fonts_size) - 2))))
-    equip_n_sum_lbl.append(tk.Label(master=eq_insert_fr, text='Количество',
+    equip_n_sum_lbl.append(tk.Label(master=canvas_widget, text='Количество',
                                   bg="snow", font=(fonts_name, str(int(fonts_size) - 2))))
-    equip_n_model_lbl[-1].grid(column=0, row=(2+(len(equip_n_model_lbl)-1)*3), padx=5)
-    equip_n_type_lbl[-1].grid(column=1, row=(2+(len(equip_n_type_lbl)-1)*3), padx=5)
-    equip_n_cons_lbl[-1].grid(column=2, row=(2+(len(equip_n_cons_lbl)-1)*3), padx=5)
-    equip_n_sum_lbl[-1].grid(column=3, row=(2+(len(equip_n_sum_lbl)-1)*3), padx=5)
-    equip_n_model_ent.append(tk.Entry(master=eq_insert_fr, font=(fonts_name, fonts_size), state="disabled"))
-    equip_n_type_ent.append(tk.Entry(master=eq_insert_fr, font=(fonts_name, fonts_size), state="disabled"))
-    equip_n_cons_ent.append(tk.Entry(master=eq_insert_fr, font=(fonts_name, fonts_size), state="disabled"))
-    equip_n_sum_ent.append(tk.Entry(master=eq_insert_fr, font=(fonts_name, fonts_size), state="disabled"))
-    equip_n_model_ent[-1].grid(column=0, row=(3+(len(equip_n_model_ent)-1)*3), padx=5)
-    equip_n_type_ent[-1].grid(column=1, row=(3+(len(equip_n_type_ent)-1)*3), padx=5)
-    equip_n_cons_ent[-1].grid(column=2, row=(3+(len(equip_n_cons_ent)-1)*3), padx=5)
-    equip_n_sum_ent[-1].grid(column=3, row=(3+(len(equip_n_sum_ent)-1)*3), padx=5)
+
+    equip_com.append(ttk.Combobox(values=equipments, master=canvas_widget, font=(fonts_name, str(int(fonts_size) - 2)),
+                                state="readonly"))
+    equip_n_model_ent.append(tk.Entry(master=canvas_widget, font=(fonts_name, fonts_size), state="disabled"))
+
+    equip_n_sum_ent.append(tk.Entry(master=canvas_widget, font=(fonts_name, str(int(fonts_size) - 2))))
+
+    equip_n_cons_ent.append(tk.Entry(master=canvas_widget, font=(fonts_name, fonts_size)))
+
+    equip_n_comm_ent.append(tk.Entry(master=canvas_widget, font=(fonts_name, fonts_size)))
+
+    ############ Создание новых областей ввода #########
+
+    line_cnw.append(canvas_widget.create_line((lrs, lk_f+lk_f*len(line_cnw)), (lre, lk_f+lk_f*len(line_cnw)), fill="red", width=5))
+    equip_n_model_lbl_cnw.append(canvas_widget.create_window((xcoordr1, ycoords1+lk_f*len(equip_n_model_lbl_cnw)), window=equip_n_model_lbl[-1], anchor=N))
+    equip_n_sum_lbl_cnw.append(canvas_widget.create_window((xcoordl2, ycoords1+lk_f*len(equip_n_sum_lbl_cnw)), window=equip_n_sum_lbl[-1], anchor=N))
+    equip_n_cons_lbl_cnw.append(canvas_widget.create_window((xcoordl3, ycoords1+lk_f*len(equip_n_cons_lbl_cnw)), window=equip_n_cons_lbl[-1], anchor=N))
+    equip_n_comm_lbl_cnw.append(canvas_widget.create_window((xcoordl2, ycoords3+lk_f*len(equip_n_comm_lbl_cnw)), window=equip_n_comm_lbl[-1], anchor=N))
+
+    equip_com_cnw.append(canvas_widget.create_window((xcoordr1, ycoords2+lk_f*len(equip_com_cnw)), window=equip_com[-1], anchor=N, width=760))
+    equip_n_model_ent_cnw.append(canvas_widget.create_window((xcoordr1, ycoords3+lk_f*len(equip_n_model_ent_cnw)), window=equip_n_model_ent[-1], anchor=N,
+                                                           width=760))
+
+    equip_n_sum_ent_cnw.append(canvas_widget.create_window((xcoordl2, ycoords2+lk_f*len(equip_n_sum_ent_cnw)), window=equip_n_sum_ent[-1], anchor=N,
+                                                         width=60))
+
+    equip_n_cons_ent_cnw.append(canvas_widget.create_window((xcoordl3, ycoords2+lk_f*len(equip_n_cons_ent_cnw)), window=equip_n_cons_ent[-1], anchor=N,
+                                                          width=120))
+
+    equip_n_comm_ent_cnw.append(canvas_widget.create_window((xcoordl3, ycoords3+lk_f*len(equip_n_comm_ent_cnw)), window=equip_n_comm_ent[-1], anchor=N,
+                                                          width=240))
+
+    ##################### Изменение региона прокрутки
     canvas_widget.configure(scrollregion=canvas_widget.bbox("all"))#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 def remove_equip():
     if len(equip_com) > 1:
-        equip_com[-1].destroy()
-        equip_com.pop(-1)
+        ########### Удаление крайних полей полей    ####################
 
-        equip_sum[-1].destroy()
-        equip_n_model_ent[-1].destroy()
-        equip_n_type_ent[-1].destroy()
-        equip_n_cons_ent[-1].destroy()
-        equip_n_sum_ent[-1].destroy()
+        canvas_widget.delete(equip_n_model_lbl_cnw[-1])
+        canvas_widget.delete(equip_n_comm_lbl_cnw[-1])
+        canvas_widget.delete(equip_n_cons_lbl_cnw[-1])
+        canvas_widget.delete(equip_n_sum_lbl_cnw[-1])
+        canvas_widget.delete(equip_com_cnw[-1])
+        canvas_widget.delete(equip_n_model_ent_cnw[-1])
+        canvas_widget.delete(equip_n_sum_ent_cnw[-1])
+        canvas_widget.delete(equip_n_cons_ent_cnw[-1])
+        canvas_widget.delete(equip_n_comm_ent_cnw[-1])
+        canvas_widget.delete(line_cnw[-1])
+        ########### Удаление крайних областей ввода ####################
+
         equip_n_model_lbl[-1].destroy()
-        equip_n_type_lbl[-1].destroy()
+        equip_n_comm_lbl[-1].destroy()
         equip_n_cons_lbl[-1].destroy()
         equip_n_sum_lbl[-1].destroy()
+        equip_com[-1].destroy()
+        equip_n_model_ent[-1].destroy()
+        equip_n_sum_ent[-1].destroy()
+        equip_n_cons_ent[-1].destroy()
+        equip_n_comm_ent[-1].destroy()
 
-        equip_sum.pop(-1)
+        ########### Удаление из массива              ####################
+
+        equip_com.pop(-1)
         equip_n_model_ent.pop(-1)
-        equip_n_type_ent.pop(-1)
+        equip_n_comm_ent.pop(-1)
         equip_n_cons_ent.pop(-1)
         equip_n_sum_ent.pop(-1)
         equip_n_model_lbl.pop(-1)
-        equip_n_type_lbl.pop(-1)
+        equip_n_comm_lbl.pop(-1)
         equip_n_cons_lbl.pop(-1)
         equip_n_sum_lbl.pop(-1)
+
+        equip_com_cnw.pop(-1)
+        equip_n_model_ent_cnw.pop(-1)
+        equip_n_comm_ent_cnw.pop(-1)
+        equip_n_cons_ent_cnw.pop(-1)
+        equip_n_sum_ent_cnw.pop(-1)
+        equip_n_model_lbl_cnw.pop(-1)
+        equip_n_comm_lbl_cnw.pop(-1)
+        equip_n_cons_lbl_cnw.pop(-1)
+        equip_n_sum_lbl_cnw.pop(-1)
+        line_cnw.pop(-1)
+
+        ##################### Изменение региона прокрутки
+        canvas_widget.configure(scrollregion=canvas_widget.bbox("all"))  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     else:
         pass
+
 
 #######################################################################################################################
 # **********                            Main function for work                                              **********#
@@ -151,6 +180,7 @@ c_muser = claim_f['month']
 c_yuser = claim_f['year']
 claim_number = str(claim_f['number'])
 
+length_font, hight_font = get_need_val.GetTextDimensions('0', int(fonts_size)-2, fonts_name)
 
 #######################################################################################################################
 #                                       GUI                                                                           #
@@ -244,7 +274,7 @@ frm_claim_equip.pack(fill=tk.X, pady=5)
 
 #Для примера. Потом оборудование будет браться из БД
 # equipments = ['', 'иное', 'navien', 'viessman sdfhgdhgbnhjhtgvcdvfbdgsfdvbgsafdvfbsgrafsd', 'ПГ-2', 'ПГ-3', 'ПГ-4']
-equipments = ['', 'иное', 'navien', 'viessman', 'ПГ-2', 'ПГ-3', 'ПГ-4']
+equipments = ['ввести вручную', 'navien', 'viessman', 'ПГ-2', 'ПГ-3', 'ПГ-4']
 
 #Определение ширины виджета выбора оборудования
 leng = 1
@@ -258,15 +288,29 @@ elif leng > 30:
 
 #Создание массивов для виджетов ввода оборудования
 equip_com = ['']
-equip_sum = ['']
+# equip_sum = ['']
 equip_n_model_ent = ['']
-equip_n_type_ent = ['']
+equip_n_comm_ent = ['']
 equip_n_cons_ent = ['']
 equip_n_sum_ent = ['']
+
 equip_n_model_lbl = ['']
-equip_n_type_lbl = ['']
+equip_n_comm_lbl = ['']
 equip_n_cons_lbl = ['']
 equip_n_sum_lbl = ['']
+
+
+equip_com_cnw = ['']
+equip_sum_cnw = ['']
+equip_n_model_ent_cnw = ['']
+equip_n_comm_ent_cnw = ['']
+equip_n_cons_ent_cnw = ['']
+equip_n_sum_ent_cnw = ['']
+equip_n_model_lbl_cnw = ['']
+equip_n_comm_lbl_cnw = ['']
+equip_n_cons_lbl_cnw = ['']
+equip_n_sum_lbl_cnw = ['']
+line_cnw = ['']
 
 # Кнопка создания дополнительного поля по оборудованию
 add_equip_butt = tk.Button(master=frm_claim_equip, font=(fonts_name, str(int(fonts_size)-2)),
@@ -278,17 +322,88 @@ rem_equip_butt.grid(column=2, row=0, columnspan=2)
 
 #Область ввода оборудования
 
-frame_eq = tk.LabelFrame(master=cl_dscr, bg="red")#, width=1100, height=500)
+frame_eq = tk.LabelFrame(master=cl_dscr, bg="snow")#, width=1100, height=500)
 frame_eq.pack(side=LEFT)
-canvas_widget = Canvas(master=frame_eq, width=1300, height=300, bg="green")
+canvas_widget = Canvas(master=frame_eq, width=1300, height=300, bg="snow")
 
 canvas_widget.pack(side=LEFT)
 
-equip_sum[0] = tk.Entry(master=cl_dscr, width=3, font=(fonts_name, str(int(fonts_size)-2)))
+# equip_sum[0] = tk.Entry(master=cl_dscr, width=3, font=(fonts_name, str(int(fonts_size)-2)))
+
+# Описание полей
+equip_n_model_lbl[0] = tk.Label(master=canvas_widget, text = 'Марка/модель оборудования №'+ str(len(equip_com)),
+                              bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
+equip_n_comm_lbl[0] = tk.Label(master=canvas_widget, text = 'Комментарий:',
+                              bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
+equip_n_cons_lbl[0] = tk.Label(master=canvas_widget, text = 'Расход, м^3/ч',
+                              bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
+equip_n_sum_lbl[0] = tk.Label(master=canvas_widget, text = 'Количество',
+                              bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
+
+lrs = 0                     # Начальная позиция горизонтальной линии
+lre = 1300                  # Конечная позиция горизонтальной линии
+lk = 0                      # Отступ горизонтальной линии
+lk_f = 40+7*hight_font      # Отступ финишной горизонтальной линии
 
 
-eq_insert_fr = Frame(master=canvas_widget)
-canvas_widget.create_window((0, 0), window=eq_insert_fr, anchor='nw')
+xcoordr1 = 390
+xcoordl2 = 780+130
+xcoordl3 = 780+130+260
+ycoords1 = 10
+ycoords2 = 20+2*hight_font
+ycoords3 = 40+4*hight_font
+
+line = canvas_widget.create_line((lrs, lk), (lre, lk), fill="red", width=5)
+line_cnw[0] = canvas_widget.create_line((lrs, lk_f), (lre, lk_f), fill="red", width=5)
+equip_n_model_lbl_cnw[0] = canvas_widget.create_window((xcoordr1, ycoords1), window=equip_n_model_lbl, anchor=N)
+equip_n_sum_lbl_cnw[0] = canvas_widget.create_window((xcoordl2, ycoords1), window=equip_n_sum_lbl, anchor=N)
+equip_n_cons_lbl_cnw[0] = canvas_widget.create_window((xcoordl3, ycoords1), window=equip_n_cons_lbl, anchor=N)
+equip_n_comm_lbl_cnw[0] = canvas_widget.create_window((xcoordl2, ycoords3), window=equip_n_comm_lbl, anchor=N)
+
+
+
+# Выбор/ввод оборудования
+
+equip_com[0] = ttk.Combobox(values=equipments, master=canvas_widget, font=(fonts_name, str(int(fonts_size) - 2)),
+                                state="readonly")
+equip_com_cnw[0] = canvas_widget.create_window((xcoordr1, ycoords2), window=equip_com[0], anchor=N, width=760)
+
+equip_n_model_ent[0] = tk.Entry(master=canvas_widget, font=(fonts_name, fonts_size), state="disabled")
+equip_n_model_ent_cnw[0] = canvas_widget.create_window((xcoordr1, ycoords3), window=equip_n_model_ent[0], anchor=N, width=760)
+
+# Количество оборудования
+
+equip_n_sum_ent[0] = tk.Entry(master=canvas_widget, font=(fonts_name, str(int(fonts_size) - 2)))
+equip_n_sum_ent_cnw[0] = canvas_widget.create_window((xcoordl2, ycoords2), window=equip_n_sum_ent[0], anchor=N, width=60)
+
+# Расход
+
+equip_n_cons_ent[0] = tk.Entry(master=canvas_widget, font=(fonts_name, fonts_size))
+equip_n_cons_ent_cnw[0] = canvas_widget.create_window((xcoordl3, ycoords2), window=equip_n_cons_ent[0], anchor=N, width=120)
+
+# Ввод комментария (при необходимости)
+
+equip_n_comm_ent[0] = tk.Entry(master=canvas_widget, font=(fonts_name, fonts_size))
+equip_n_comm_ent_cnw[0] = canvas_widget.create_window((xcoordl3, ycoords3), window=equip_n_comm_ent[0], anchor=N, width=240)
+
+
+# Установка скролла вертикального
+sb_ver = Scrollbar(master=frame_eq, orient=VERTICAL, command=canvas_widget.yview)
+sb_ver.pack(side=RIGHT, fill=Y)
+
+canvas_widget.configure(yscrollcommand=sb_ver.set)
+canvas_widget.configure(scrollregion=canvas_widget.bbox("all"))
+
+
+cl_dscr.mainloop()
+
+#######################################################################################################################
+######################################  Для тестов  ###################################################################
+
+# canvas_widget.bind('<Configure>', lambda e: canvas_widget.configure(scrollregion=canvas_widget.bbox('all')))
+
+# eq_insert_fr = Frame(master=canvas_widget)
+# canvas_widget.create_window((0, 0), window=eq_insert_fr, anchor='nw')
 
 # for i in range(2):
 #     # equip_sum[0] = tk.Entry(master=cl_dscr, width=3, font=(fonts_name, str(int(fonts_size)-2)))
@@ -306,45 +421,63 @@ canvas_widget.create_window((0, 0), window=eq_insert_fr, anchor='nw')
 #     canvas_widget.create_window(x, (i+1)*visa, window=equip_sum[i+1], anchor=NW)
 
 
-equip_com[0] = ttk.Combobox(values=equipments, master=eq_insert_fr, font=(fonts_name, str(int(fonts_size) - 2)),
-                                state="readonly", width=leng)
-equip_com[0].grid(column=0, row=0, columnspan=3)
-
-equip_sum[0] = tk.Entry(master=eq_insert_fr, width=3, font=(fonts_name, str(int(fonts_size)-2)))
-
-
-equip_n_model_lbl[0] = tk.Label(master=eq_insert_fr, text = 'Модель оборудования',
-                              bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
-equip_n_type_lbl[0] = tk.Label(master=eq_insert_fr, text = 'Тип оборудования',
-                              bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
-equip_n_cons_lbl[0] = tk.Label(master=eq_insert_fr, text = 'Расход, м^3/ч',
-                              bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
-equip_n_sum_lbl[0] = tk.Label(master=eq_insert_fr, text = 'Количество',
-                              bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
-equip_n_model_lbl[0].grid(column=0, row=2, padx=5)
-equip_n_type_lbl[0].grid(column=1, row=2, padx=5)
-equip_n_cons_lbl[0].grid(column=2, row=2, padx=5)
-equip_n_sum_lbl[0].grid(column=3, row=2, padx=5)
-equip_n_model_ent[0] = tk.Entry(master=eq_insert_fr, font=(fonts_name, fonts_size), state="disabled")
-equip_n_type_ent[0] = tk.Entry(master=eq_insert_fr, font=(fonts_name, fonts_size), state="disabled")
-equip_n_cons_ent[0] = tk.Entry(master=eq_insert_fr, font=(fonts_name, fonts_size), state="disabled")
-equip_n_sum_ent[0] = tk.Entry(master=eq_insert_fr, font=(fonts_name, fonts_size), state="disabled")
-equip_n_model_ent[0].grid(column=0, row=3, padx=5)
-equip_n_type_ent[0].grid(column=1, row=3, padx=5)
-equip_n_cons_ent[0].grid(column=2, row=3, padx=5)
-equip_n_sum_ent[0].grid(column=3, row=3, padx=5)
-
-
-
-
-sb_ver = Scrollbar(master=frame_eq, orient=VERTICAL, command=canvas_widget.yview)
-sb_ver.pack(side=RIGHT, fill=Y)
-
-canvas_widget.configure(yscrollcommand=sb_ver.set)
+# equip_com[0] = ttk.Combobox(values=equipments, master=eq_insert_fr, font=(fonts_name, str(int(fonts_size) - 2)),
+#                                 state="readonly", width=leng)
+# equip_com[0].grid(column=0, row=0, columnspan=3)
 #
-# canvas_widget.bind('<Configure>', lambda e: canvas_widget.configure(scrollregion=canvas_widget.bbox('all')))
+# equip_sum[0] = tk.Entry(master=eq_insert_fr, width=3, font=(fonts_name, str(int(fonts_size)-2)))
+#
+# equip_n_model_ent[0] = tk.Entry(master=eq_insert_fr, font=(fonts_name, fonts_size), state="disabled")
+#
+# equip_n_cons_ent[0] = tk.Entry(master=eq_insert_fr, font=(fonts_name, fonts_size), state="disabled")
+#
+# equip_n_model_ent[0].grid(column=0, row=3, padx=5)
+# equip_n_type_ent[0].grid(column=1, row=3, padx=5)
+# equip_n_cons_ent[0].grid(column=2, row=3, padx=5)
+# equip_n_sum_ent[0].grid(column=3, row=3, padx=5)
 
-canvas_widget.configure(scrollregion=canvas_widget.bbox("all"))
+
+#######################################################
+
+# for i in range(2):
+#     # equip_sum[0] = tk.Entry(master=cl_dscr, width=3, font=(fonts_name, str(int(fonts_size)-2)))
+#     l = (i + 1) * 3
+#     q = ""
+#     for j in range(l):
+#         q = q + "0"
+#     visa, lengha = get_need_val.GetTextDimensions(q, int(fonts_size) - 2, fonts_name)
+#     equip_sum.append(tk.Entry(master=canvas_widget, width=l, font=(fonts_name, str(int(fonts_size) - 2))))
+#     equip_sum[-1].insert(0, q)
+#     x = lengha / 2
+#     y = visa / 2
+#     equip_sum[-1].insert(0, str(lengha) + "^" + str(visa))
+#     # equip_sum[i + 1].grid(row = i, column = 0, sticky=W)
+#     canvas_widget.create_window(x, (i + 1) * visa * 10, window=equip_sum[-1], anchor=NW)
 
 
-cl_dscr.mainloop()
+# equip_com.append(ttk.Combobox(values=equipments, master=eq_insert_fr, font=(fonts_name, str(int(fonts_size) - 2)),
+#                             state="readonly", width=leng))
+# equip_com[-1].grid(column=0, row=(1+(len(equip_com)-1)*3), columnspan=3)
+# equip_sum.append(tk.Entry(master=eq_insert_fr, width=3, font=(fonts_name, str(int(fonts_size) - 2))))
+# equip_sum[-1].grid(column=3, row=(1+(len(equip_sum)-1)*3), pady=5)
+#
+# equip_n_model_lbl.append(tk.Label(master=eq_insert_fr, text='Модель оборудования',
+#                                 bg="snow", font=(fonts_name, str(int(fonts_size) - 2))))
+# equip_n_comm_lbl.append(tk.Label(master=eq_insert_fr, text='Тип оборудования',
+#                                bg="snow", font=(fonts_name, str(int(fonts_size) - 2))))
+# equip_n_cons_lbl.append(tk.Label(master=eq_insert_fr, text='Расход, м^3/ч',
+#                                bg="snow", font=(fonts_name, str(int(fonts_size) - 2))))
+# equip_n_sum_lbl.append(tk.Label(master=eq_insert_fr, text='Количество',
+#                               bg="snow", font=(fonts_name, str(int(fonts_size) - 2))))
+# equip_n_model_lbl[-1].grid(column=0, row=(2+(len(equip_n_model_lbl)-1)*3), padx=5)
+# equip_n_comm_lbl[-1].grid(column=1, row=(2+(len(equip_n_comm_lbl)-1)*3), padx=5)
+# equip_n_cons_lbl[-1].grid(column=2, row=(2+(len(equip_n_cons_lbl)-1)*3), padx=5)
+# equip_n_sum_lbl[-1].grid(column=3, row=(2+(len(equip_n_sum_lbl)-1)*3), padx=5)
+# equip_n_model_ent.append(tk.Entry(master=eq_insert_fr, font=(fonts_name, fonts_size), state="disabled"))
+# equip_n_type_ent.append(tk.Entry(master=eq_insert_fr, font=(fonts_name, fonts_size), state="disabled"))
+# equip_n_cons_ent.append(tk.Entry(master=eq_insert_fr, font=(fonts_name, fonts_size), state="disabled"))
+# equip_n_sum_ent.append(tk.Entry(master=eq_insert_fr, font=(fonts_name, fonts_size), state="disabled"))
+# equip_n_model_ent[-1].grid(column=0, row=(3+(len(equip_n_model_ent)-1)*3), padx=5)
+# equip_n_type_ent[-1].grid(column=1, row=(3+(len(equip_n_type_ent)-1)*3), padx=5)
+# equip_n_cons_ent[-1].grid(column=2, row=(3+(len(equip_n_cons_ent)-1)*3), padx=5)
+# equip_n_sum_ent[-1].grid(column=3, row=(3+(len(equip_n_sum_ent)-1)*3), padx=5)
