@@ -9,6 +9,7 @@ import checkdate
 import get_need_val
 import find_claim_number
 import create_path
+import re
 
 fonts_name = "Arial"
 link_all_cl = 'd:/SSH/Managers/SSH/Database/'
@@ -34,6 +35,16 @@ claim_f = {
         'tel_n_name': 'ph_nam_cl'
            }
 
+#######################################################################################################################
+#                                       FUNCTIONS for checking insert data                                            #
+#######################################################################################################################
+# Функция для вставки значения количества оборудования, от 0 до 99
+def is_valid_only_numeric_0_99(d_value):
+    return re.match("^\d{0,2}$", d_value) is not None
+
+def is_valid_only_decimal(d_value):
+    result = re.match("^\d{0,2}\.{0,1}\d{0,3}$", d_value) is not None
+    return result
 
 #######################################################################################################################
 #                                       LOCAL FUNCTIONS                                                               #
@@ -62,6 +73,15 @@ def select():
     claim_goal_entr.delete(0, tk.END)
     claim_goal_entr.insert(0, result)
 
+def selected(event):
+    for i in range(len(equip_com)):
+        selection = equip_com[i].get()
+        if selection == "ввести вручную":
+            equip_n_model_ent[i].configure(state="normal")
+        else:
+            equip_n_model_ent[i].configure(state="disabled")
+
+
 
 def add_equip():  # +lk_f*len()
 
@@ -69,7 +89,7 @@ def add_equip():  # +lk_f*len()
 
     equip_n_model_lbl.append(tk.Label(master=canvas_widget, text='Марка/модель оборудования №' + str(len(equip_n_model_lbl)+1),
                                     bg="snow", font=(fonts_name, str(int(fonts_size) - 2))))
-    equip_n_comm_lbl.append(tk.Label(master=canvas_widget, text='Комментарий:',
+    equip_n_comm_lbl.append(tk.Label(master=canvas_widget, text='Комментарий (сущ, нов и т.п.):',
                                    bg="snow", font=(fonts_name, str(int(fonts_size) - 2))))
     equip_n_cons_lbl.append(tk.Label(master=canvas_widget, text='Расход, м^3/ч',
                                    bg="snow", font=(fonts_name, str(int(fonts_size) - 2))))
@@ -78,11 +98,12 @@ def add_equip():  # +lk_f*len()
 
     equip_com.append(ttk.Combobox(values=equipments, master=canvas_widget, font=(fonts_name, str(int(fonts_size) - 2)),
                                 state="readonly"))
+    equip_com[-1].bind("<<ComboboxSelected>>", selected)
     equip_n_model_ent.append(tk.Entry(master=canvas_widget, font=(fonts_name, fonts_size), state="disabled"))
 
-    equip_n_sum_ent.append(tk.Entry(master=canvas_widget, font=(fonts_name, str(int(fonts_size) - 2))))
+    equip_n_sum_ent.append(tk.Entry(master=canvas_widget, font=(fonts_name, str(int(fonts_size) - 2)), validate="key", validatecommand=check_num_0_99))
 
-    equip_n_cons_ent.append(tk.Entry(master=canvas_widget, font=(fonts_name, fonts_size)))
+    equip_n_cons_ent.append(tk.Entry(master=canvas_widget, font=(fonts_name, fonts_size), validate="key", validatecommand=check_float_0__99_999))
 
     equip_n_comm_ent.append(tk.Entry(master=canvas_widget, font=(fonts_name, fonts_size)))
 
@@ -274,7 +295,7 @@ frm_claim_equip.pack(fill=tk.X, pady=5)
 
 #Для примера. Потом оборудование будет браться из БД
 # equipments = ['', 'иное', 'navien', 'viessman sdfhgdhgbnhjhtgvcdvfbdgsfdvbgsafdvfbsgrafsd', 'ПГ-2', 'ПГ-3', 'ПГ-4']
-equipments = ['ввести вручную', 'navien', 'viessman', 'ПГ-2', 'ПГ-3', 'ПГ-4']
+equipments = ['ввести вручную', 'navien', 'viessman', 'ПГ-2', 'ПГ-3', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4', 'ПГ-4']
 
 #Определение ширины виджета выбора оборудования
 leng = 1
@@ -328,12 +349,16 @@ canvas_widget = Canvas(master=frame_eq, width=1300, height=300, bg="snow")
 
 canvas_widget.pack(side=LEFT)
 
-# equip_sum[0] = tk.Entry(master=cl_dscr, width=3, font=(fonts_name, str(int(fonts_size)-2)))
+# Регистрация функций
+# Функция проверки на числа
+check_num_0_99 = (cl_dscr.register(is_valid_only_numeric_0_99), "%P")
+# Функция проверки ввода расхода
+check_float_0__99_999 = (cl_dscr.register(is_valid_only_decimal), "%P")
 
 # Описание полей
 equip_n_model_lbl[0] = tk.Label(master=canvas_widget, text = 'Марка/модель оборудования №'+ str(len(equip_com)),
                               bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
-equip_n_comm_lbl[0] = tk.Label(master=canvas_widget, text = 'Комментарий:',
+equip_n_comm_lbl[0] = tk.Label(master=canvas_widget, text = 'Комментарий (сущ, нов и т.п.):',
                               bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
 equip_n_cons_lbl[0] = tk.Label(master=canvas_widget, text = 'Расход, м^3/ч',
                               bg="snow", font=(fonts_name, str(int(fonts_size)-2)))
@@ -355,10 +380,10 @@ ycoords3 = 40+4*hight_font
 
 line = canvas_widget.create_line((lrs, lk), (lre, lk), fill="red", width=5)
 line_cnw[0] = canvas_widget.create_line((lrs, lk_f), (lre, lk_f), fill="red", width=5)
-equip_n_model_lbl_cnw[0] = canvas_widget.create_window((xcoordr1, ycoords1), window=equip_n_model_lbl, anchor=N)
-equip_n_sum_lbl_cnw[0] = canvas_widget.create_window((xcoordl2, ycoords1), window=equip_n_sum_lbl, anchor=N)
-equip_n_cons_lbl_cnw[0] = canvas_widget.create_window((xcoordl3, ycoords1), window=equip_n_cons_lbl, anchor=N)
-equip_n_comm_lbl_cnw[0] = canvas_widget.create_window((xcoordl2, ycoords3), window=equip_n_comm_lbl, anchor=N)
+equip_n_model_lbl_cnw[0] = canvas_widget.create_window((xcoordr1, ycoords1), window=equip_n_model_lbl[0], anchor=N)
+equip_n_sum_lbl_cnw[0] = canvas_widget.create_window((xcoordl2, ycoords1), window=equip_n_sum_lbl[0], anchor=N)
+equip_n_cons_lbl_cnw[0] = canvas_widget.create_window((xcoordl3, ycoords1), window=equip_n_cons_lbl[0], anchor=N)
+equip_n_comm_lbl_cnw[0] = canvas_widget.create_window((xcoordl2, ycoords3), window=equip_n_comm_lbl[0], anchor=N)
 
 
 
@@ -373,12 +398,12 @@ equip_n_model_ent_cnw[0] = canvas_widget.create_window((xcoordr1, ycoords3), win
 
 # Количество оборудования
 
-equip_n_sum_ent[0] = tk.Entry(master=canvas_widget, font=(fonts_name, str(int(fonts_size) - 2)))
+equip_n_sum_ent[0] = tk.Entry(master=canvas_widget, font=(fonts_name, str(int(fonts_size) - 2)), validate="key", validatecommand=check_num_0_99)
 equip_n_sum_ent_cnw[0] = canvas_widget.create_window((xcoordl2, ycoords2), window=equip_n_sum_ent[0], anchor=N, width=60)
 
 # Расход
 
-equip_n_cons_ent[0] = tk.Entry(master=canvas_widget, font=(fonts_name, fonts_size))
+equip_n_cons_ent[0] = tk.Entry(master=canvas_widget, font=(fonts_name, fonts_size), validate="key", validatecommand=check_float_0__99_999)
 equip_n_cons_ent_cnw[0] = canvas_widget.create_window((xcoordl3, ycoords2), window=equip_n_cons_ent[0], anchor=N, width=120)
 
 # Ввод комментария (при необходимости)
@@ -394,6 +419,7 @@ sb_ver.pack(side=RIGHT, fill=Y)
 canvas_widget.configure(yscrollcommand=sb_ver.set)
 canvas_widget.configure(scrollregion=canvas_widget.bbox("all"))
 
+equip_com[0].bind("<<ComboboxSelected>>", selected)
 
 cl_dscr.mainloop()
 
