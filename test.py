@@ -13,7 +13,8 @@ import re
 
 fonts_name = "Arial"
 link_all_cl = 'd:/SSH/Managers/SSH/Database/'
-fonts_size = '14'
+fonts_size = '16'
+
 
 claim_f = {
         # Основные данные
@@ -185,6 +186,19 @@ def remove_equip():
     else:
         pass
 
+def MouseWheelHandler(event):
+    canvas_widget.yview_scroll("scroll", "units")
+    # "scroll", event.delta, "units"
+    # global count
+    #
+    # def delta(event):
+    #     if event.num == 5 or event.delta < 0:
+    #         return -1
+    #     return 1
+    #
+    # count += delta(event)
+    # print(count)
+
 
 #######################################################################################################################
 # **********                            Main function for work                                              **********#
@@ -202,7 +216,8 @@ c_yuser = claim_f['year']
 claim_number = str(claim_f['number'])
 
 length_font, hight_font = get_need_val.GetTextDimensions('0', int(fonts_size)-2, fonts_name)
-
+if int(fonts_size) > 16:
+    fonts_size = '16'
 #######################################################################################################################
 #                                       GUI                                                                           #
 #######################################################################################################################
@@ -419,7 +434,12 @@ sb_ver.pack(side=RIGHT, fill=Y)
 canvas_widget.configure(yscrollcommand=sb_ver.set)
 canvas_widget.configure(scrollregion=canvas_widget.bbox("all"))
 
+# Установка действий
+# Выбор действия при выборе оборудования
 equip_com[0].bind("<<ComboboxSelected>>", selected)
+
+# скролл мыши
+canvas_widget.bind('<MouseWheel>', MouseWheelHandler)
 
 cl_dscr.mainloop()
 
