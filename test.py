@@ -223,8 +223,8 @@ if int(fonts_size) > 16:
 #######################################################################################################################
 
 # Создание окна *************************************
-cl_dscr = tk.Tk()
-# cl_dscr = tk.Toplevel()
+#cl_dscr = tk.Tk()
+cl_dscr = tk.Toplevel()
 cl_dscr.title(claim_number)
 
 ##################################### Корректировка заявки ############################################################
@@ -251,9 +251,24 @@ claim_num_title_dat = tk.Label(master=frm_claimcorrect, text="-"+c_muser+"-"+c_y
                                font=(fonts_name, fonts_size))
 claim_num_title_dat.grid(row=0, column=3, sticky="e")
 # Кнопки "ПРОВЕРИТЬ" *************************************
-btn_next2 = tk.Button(master=frm_claimcorrect, text="Проверить", bg="snow", fg="black",
+btn_next2 = tk.Button(master=frm_claimcorrect, text="Проверить\nномер", bg="snow", fg="black",
                      font=(fonts_name, fonts_size), command=check_claim)
 btn_next2.grid(row=0, column=4, sticky="e")
+
+# Кнопки "СФОРМИРОВАТЬ" *************************************
+btn_create = tk.Button(master=frm_claimcorrect, text="Сформировать\nв Word", bg="snow", fg="black",
+                     font=(fonts_name, fonts_size))#, command=check_claim)
+btn_create.grid(row=0, column=5, sticky="e")
+
+# Кнопки "СОХРАНИТЬ" *************************************
+btn_save = tk.Button(master=frm_claimcorrect, text="Сохранить\nв базу", bg="snow", fg="black",
+                     font=(fonts_name, fonts_size))#, command=check_claim)
+btn_save.grid(row=0, column=6, sticky="e")
+
+# Кнопки "вложить файлы" *************************************
+btn_add_f = tk.Button(master=frm_claimcorrect, text="Прикрепить\nфайлы", bg="snow", fg="black",
+                     font=(fonts_name, fonts_size))#, command=check_claim)
+btn_add_f.grid(row=0, column=7, sticky="e")
 ##################################### Ввод объекта ####################################################################
 # Создание рамки
 frm_claim_obj = tk.Frame(master=cl_dscr, bg="snow")
@@ -337,7 +352,7 @@ equip_n_sum_lbl = ['']
 
 
 equip_com_cnw = ['']
-equip_sum_cnw = ['']
+# equip_sum_cnw = ['']
 equip_n_model_ent_cnw = ['']
 equip_n_comm_ent_cnw = ['']
 equip_n_cons_ent_cnw = ['']
