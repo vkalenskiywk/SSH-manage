@@ -12,7 +12,7 @@ import create_path
 import re
 
 fonts_name = "Arial"
-link_all_cl = 'd:/SSH/Managers/SSH/Database/'
+link_all_cl = 'd:/SSH/Managers/SSH/Database/lists/'
 fonts_size = '16'
 
 
@@ -43,29 +43,49 @@ claim_f = {
 def is_valid_only_numeric_0_99(d_value):
     return re.match("^\d{0,2}$", d_value) is not None
 
+def is_valid_only_numeric_0_9999(d_value):
+    return re.match("^\d{0,4}$", d_value) is not None
+
 def is_valid_only_decimal(d_value):
     result = re.match("^\d{0,2}\.{0,1}\d{0,3}$", d_value) is not None
     return result
 
+def is_valid_only_numeric_NN_point_NNNNNN(d_value):
+    result = re.match("^\d{0,2}\.{0,1}\d{0,6}$", d_value) is not None
+    return result
+
+def is_valid_only_numeric_NNNN_point_NN(d_value):
+    result = re.match("^\d{0,4}\.{0,1}\d{0,2}$", d_value) is not None
+    return result
+
+
 #######################################################################################################################
 #                                       LOCAL FUNCTIONS                                                               #
 #######################################################################################################################
+
+############################# Функция проверки номера заявки
 def check_claim():
     new_c_n = get_need_val.get_value(claim_num_title_num.get())
-    claim_num_title_num.delete(0, tk.END)
-    claim_num_title_num.insert(0, new_c_n)
-    fullpath = create_path.createpath(link_all_cl, "claims_list.xlsx")
-    ch_cl = find_claim_number.ch_claim(new_c_n, fullpath, c_muser, c_yuser)
-    if not (ch_cl):
-        showerror(title="Проверьте данные", message="Заявка с таким номером уже есть", master=cl_dscr)
-    else:
-        showerror(title="Проверьте данные", message="Заявки с таким номером еще нет", master=cl_dscr)
-        new_c_n = str(new_c_n)
-        while len(new_c_n) < 4:
-            new_c_n = "0" + new_c_n
+    if new_c_n != '':
+        fullpath = create_path.createpath(link_all_cl, "claims_list.xlsx")
+        ch_cl = find_claim_number.ch_claim(new_c_n, fullpath, c_muser, c_yuser)
+        if not (ch_cl):
+            showerror(title="Проверьте данные", message="Заявка с таким номером уже есть", master=cl_dscr)
             claim_num_title_num.delete(0, tk.END)
-            claim_num_title_num.insert(0, new_c_n)
+            claim_num_title_num.insert(0, claim_number)
+        else:
+            showinfo(title="Проверьте данные", message="Заявки с таким номером еще нет", master=cl_dscr)
+            new_c_n = str(new_c_n)
+            while len(new_c_n) < 4:
+                new_c_n = "0" + new_c_n
+                claim_num_title_num.delete(0, tk.END)
+                claim_num_title_num.insert(0, new_c_n)
+    else:
+        showerror(title="Проверьте данные", message="Данные не внесены\nВставлен автоматически\nсозданный номер!", master=cl_dscr)
+        claim_num_title_num.delete(0, tk.END)
+        claim_num_title_num.insert(0, claim_number)
 
+############################# Функция установки целей
 def select():
     result = ""
     if food.get() == 1: result = f"{result}приготовление пищи; "
@@ -74,6 +94,7 @@ def select():
     claim_goal_entr.delete(0, tk.END)
     claim_goal_entr.insert(0, result)
 
+############################# Функция ввода нового оборудования
 def selected(event):
     for i in range(len(equip_com)):
         selection = equip_com[i].get()
@@ -83,7 +104,7 @@ def selected(event):
             equip_n_model_ent[i].configure(state="disabled")
 
 
-
+############################# Функция добавления полей оборудования
 def add_equip():  # +lk_f*len()
 
     ############ Внесение новых полей ##################
@@ -132,6 +153,7 @@ def add_equip():  # +lk_f*len()
     ##################### Изменение региона прокрутки
     canvas_widget.configure(scrollregion=canvas_widget.bbox("all"))#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+############################# Функция удаления полей оборудования
 def remove_equip():
     if len(equip_com) > 1:
         ########### Удаление крайних полей полей    ####################
@@ -186,6 +208,7 @@ def remove_equip():
     else:
         pass
 
+############################# Функция скроллинга мышкой
 def MouseWheelHandler(event):
     canvas_widget.yview_scroll("scroll", "units")
     # "scroll", event.delta, "units"
@@ -200,9 +223,35 @@ def MouseWheelHandler(event):
     # print(count)
 
 
+
+
+
+
 #######################################################################################################################
 # **********                            Main function for work                                              **********#
 #######################################################################################################################
+############################# Функция сбора всех данных с проверкой введенных данных
+def claim_complete():
+    error = 0 # создание локальной переменной для проверки данных
+    # проверка, что бы номер не оказался
+    final_claim_number = get_need_val.get_value(claim_num_title_num.get())
+    if final_claim_number != '':
+        fullpath = create_path.createpath(link_all_cl, "claims_list.xlsx")
+        ch_cl = find_claim_number.ch_claim(final_claim_number, fullpath, c_muser, c_yuser)
+        if not (ch_cl):
+            error = 1
+            claim_num_title.configure(fg='red')
+        else:
+            final_claim_number = str(final_claim_number)
+            while len(final_claim_number) < 4:
+                final_claim_number = "0" + final_claim_number
+                claim_num_title_num.delete(0, tk.END)
+                claim_num_title_num.insert(0, final_claim_number)
+                claim_num_title.configure(fg='black')
+    else:
+        error = 1
+        claim_num_title.configure(fg='red')
+
 
 
 
@@ -228,6 +277,10 @@ cl_dscr = tk.Toplevel()
 cl_dscr.title(claim_number)
 
 ##################################### Корректировка заявки ############################################################
+
+# Функция проверки на числа
+check_num_NNNN = (cl_dscr.register(is_valid_only_numeric_0_9999), "%P")
+
 # Создание рамки для корректировке номера заявки *************************************
 frm_claimcorrect = tk.Frame(master=cl_dscr, bg="snow")
 frm_claimcorrect.pack(fill=tk.X, ipadx=5, ipady=5)
@@ -242,7 +295,7 @@ claim_num_title_let = tk.Label(master=frm_claimcorrect, text=claim_letter, bg="s
                            font=(fonts_name, fonts_size))
 claim_num_title_let.grid(row=0, column=1, sticky="e")
 # Область корректировки номера *************************************
-claim_num_title_num = tk.Entry(master=frm_claimcorrect, width=4, font=(fonts_name, fonts_size))
+claim_num_title_num = tk.Entry(master=frm_claimcorrect, width=4, font=(fonts_name, fonts_size), validate="key", validatecommand=check_num_NNNN)
 claim_num_title_num.grid(row=0, column=2, sticky="e")
 claim_num_title_num.insert(0, claim_number)
 # Область даты заявки *************************************
@@ -262,7 +315,7 @@ btn_create.grid(row=0, column=5, sticky="e")
 
 # Кнопки "СОХРАНИТЬ" *************************************
 btn_save = tk.Button(master=frm_claimcorrect, text="Сохранить\nв базу", bg="snow", fg="black",
-                     font=(fonts_name, fonts_size))#, command=check_claim)
+                     font=(fonts_name, fonts_size), command=claim_complete)
 btn_save.grid(row=0, column=6, sticky="e")
 
 # Кнопки "вложить файлы" *************************************
@@ -270,7 +323,25 @@ btn_add_f = tk.Button(master=frm_claimcorrect, text="Прикрепить\nфа�
                      font=(fonts_name, fonts_size))#, command=check_claim)
 btn_add_f.grid(row=0, column=7, sticky="e")
 ##################################### Ввод объекта ####################################################################
-# Создание рамки
+
+# Функция проверки на числа
+check_num_NN_point_NNNNNN = (cl_dscr.register(is_valid_only_numeric_NN_point_NNNNNN), "%P")
+check_num_square = (cl_dscr.register(is_valid_only_numeric_NNNN_point_NN), "%P")
+
+# Создание рамки позиции
+frm_claim_obj_position = tk.Frame(master=cl_dscr, bg="snow")
+frm_claim_obj_position.pack(fill=tk.X, ipadx=5, ipady=5)
+
+claim_object_position = tk.Label(master=frm_claim_obj_position, text="Координаты:",
+                    bg="snow", fg="black",
+                    font=(fonts_name, fonts_size))
+claim_object_position.grid(row=0, column=0, sticky="e")
+claim_object_posE = tk.Entry(master=frm_claim_obj_position, width=9, font=(fonts_name, fonts_size), validate="key", validatecommand=check_num_NN_point_NNNNNN)
+claim_object_posE.grid(row=0, column=1, sticky="e")
+claim_object_posN = tk.Entry(master=frm_claim_obj_position, width=9, font=(fonts_name, fonts_size), validate="key", validatecommand=check_num_NN_point_NNNNNN)
+claim_object_posN.grid(row=0, column=2, sticky="e")
+
+# Создание рамки данных
 frm_claim_obj = tk.Frame(master=cl_dscr, bg="snow")
 frm_claim_obj.pack(fill=tk.X, ipadx=5, ipady=5)
 claim_object_label = tk.Label(master=frm_claim_obj, text="Выдача технических условий на:",
@@ -291,7 +362,7 @@ claim_area_label = tk.Label(master=frm_claim_obj, text="площадь, м^2:",
                     bg="snow", fg="black",
                     font=(fonts_name, fonts_size))
 claim_area_label.grid(row=2, column=0, sticky="e")
-claim_area_entr = tk.Entry(master=frm_claim_obj, width=30, font=(fonts_name, fonts_size))
+claim_area_entr = tk.Entry(master=frm_claim_obj, width=30, font=(fonts_name, fonts_size), validate="key", validatecommand=check_num_square)
 claim_area_entr.grid(row=2, column=1, sticky="e")
 
 ##################################### Ввод целей   ####################################################################
