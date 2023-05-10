@@ -100,8 +100,10 @@ def selected(event):
         selection = equip_com[i].get()
         if selection == "ввести вручную":
             equip_n_model_ent[i].configure(state="normal")
+            equip_n_cons_ent[i].configure(state="normal")
         else:
             equip_n_model_ent[i].configure(state="disabled")
+            equip_n_cons_ent[i].configure(state="disabled")
 
 
 ############################# Функция добавления полей оборудования
@@ -252,6 +254,68 @@ def claim_complete():
         error = 1
         claim_num_title.configure(fg='red')
 
+    err_coord = 0
+    claim_coord_N = claim_object_posN.get()
+    claim_coord_E = claim_object_posE.get()
+    if claim_coord_N == "":
+        err_coord = 1
+        claim_object_position_n.configure(fg='magenta')
+    else:
+        claim_object_position_n.configure(fg='black')
+    if claim_coord_E == "":
+        err_coord = 1
+        claim_object_position_e.configure(fg='magenta')
+    else:
+        claim_object_position_e.configure(fg='black')
+
+    claim_object_type = claim_object_entr.get() # На что выдаются технические условия
+    if claim_object_type == "":
+        claim_object_label.configure(fg="red")
+        error = 1
+    else:
+        claim_object_label.configure(fg="black")
+
+    error_cadastr = 0
+    error_area = 0
+
+    claim_cadastr = claim_cadastr_entr.get()
+    claim_area = claim_area_entr.get()
+
+    if claim_cadastr == "":
+        error_cadastr = 1
+        claim_cadastr_label.configure(fg='magenta')
+    else:
+        claim_cadastr_label.configure(fg='black')
+
+    if claim_area == "":
+        error_area = 1
+        claim_area_label.configure(fg='magenta')
+    else:
+        claim_area_label.configure(fg='black')
+
+    error_goal = 0
+    claim_goal = claim_goal_entr.get()
+    if claim_goal == "":
+        error_goal = 1
+        claim_goal_label.configure(fg='magenta')
+        food_checkbutton.configure(fg='magenta')
+        heating_checkbutton.configure(fg='magenta')
+        hot_water_checkbutton.configure(fg='magenta')
+    else:
+        claim_goal_label.configure(fg='black')
+        food_checkbutton.configure(fg='black')
+        heating_checkbutton.configure(fg='black')
+        hot_water_checkbutton.configure(fg='black')
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -332,14 +396,18 @@ check_num_square = (cl_dscr.register(is_valid_only_numeric_NNNN_point_NN), "%P")
 frm_claim_obj_position = tk.Frame(master=cl_dscr, bg="snow")
 frm_claim_obj_position.pack(fill=tk.X, ipadx=5, ipady=5)
 
-claim_object_position = tk.Label(master=frm_claim_obj_position, text="Координаты:",
+claim_object_position_n = tk.Label(master=frm_claim_obj_position, text="Координаты N:",
                     bg="snow", fg="black",
                     font=(fonts_name, fonts_size))
-claim_object_position.grid(row=0, column=0, sticky="e")
-claim_object_posE = tk.Entry(master=frm_claim_obj_position, width=9, font=(fonts_name, fonts_size), validate="key", validatecommand=check_num_NN_point_NNNNNN)
-claim_object_posE.grid(row=0, column=1, sticky="e")
+claim_object_position_n.grid(row=0, column=0, sticky="e")
 claim_object_posN = tk.Entry(master=frm_claim_obj_position, width=9, font=(fonts_name, fonts_size), validate="key", validatecommand=check_num_NN_point_NNNNNN)
-claim_object_posN.grid(row=0, column=2, sticky="e")
+claim_object_posN.grid(row=0, column=1, sticky="e")
+claim_object_position_e = tk.Label(master=frm_claim_obj_position, text="Координаты E:",
+                    bg="snow", fg="black",
+                    font=(fonts_name, fonts_size))
+claim_object_position_e.grid(row=0, column=2, sticky="e")
+claim_object_posE = tk.Entry(master=frm_claim_obj_position, width=9, font=(fonts_name, fonts_size), validate="key", validatecommand=check_num_NN_point_NNNNNN)
+claim_object_posE.grid(row=0, column=3, sticky="e")
 
 # Создание рамки данных
 frm_claim_obj = tk.Frame(master=cl_dscr, bg="snow")
@@ -504,7 +572,7 @@ equip_n_sum_ent_cnw[0] = canvas_widget.create_window((xcoordl2, ycoords2), windo
 
 # Расход
 
-equip_n_cons_ent[0] = tk.Entry(master=canvas_widget, font=(fonts_name, fonts_size), validate="key", validatecommand=check_float_0__99_999)
+equip_n_cons_ent[0] = tk.Entry(master=canvas_widget, font=(fonts_name, fonts_size), validate="key", validatecommand=check_float_0__99_999, state="disabled")
 equip_n_cons_ent_cnw[0] = canvas_widget.create_window((xcoordl3, ycoords2), window=equip_n_cons_ent[0], anchor=N, width=120)
 
 # Ввод комментария (при необходимости)
